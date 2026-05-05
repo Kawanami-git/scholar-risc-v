@@ -1,11 +1,11 @@
-# SCHOLAR RISC-V Processor – Single-cycle Microarchitecture
+# Scholar-risc-v Processor – Single-cycle Microarchitecture
 
-This document introduces the **SCHOLAR RISC-V** processor in its **single-cycle** version.<br>
-Designed as an educational project, **SCHOLAR RISC-V** illustrates the internal workings of a RISC-V processor while serving as a scalable learning platform for students in computer architecture and digital systems.
+This document introduces the **scholar-risc-v** processor in its **single-cycle** version.<br>
+Designed as an educational project, **scholar-risc-v** illustrates the internal workings of a RISC-V processor while serving as a scalable learning platform for students in computer architecture and digital systems.
 
 It provides an overview of the **single-cycle** microarchitecture, lists the supported instructions, explains how the processor operates at this stage of development, and discusses both its performance and limitations. Finally, it outlines the next planned steps for the project’s evolution.
 
-The **single-cycle SCHOLAR RISC-V** processor represents the most elementary implementation of the processor — a minimal, yet solid foundation for future architectural enhancements.<br>
+The **single-cycle scholar-risc-v** processor represents the most elementary implementation of the processor — a minimal, yet solid foundation for future architectural enhancements.<br>
 This version is **single-cycle** (each instruction executes in one clock cycle) and **single-issue** (only one instruction is processed at a time).<br>
 At this stage, the processor supports only the **RV32I** and **RV64I** base instruction sets, along with the mcycle **CSR** (used for CycleMark benchmarking).<br>
 This setup defines the minimal functional and performance baseline for a RISC-V processor — an ideal starting point for learning about more advanced architectural optimizations.
@@ -22,7 +22,7 @@ it is predictable (each instruction takes one cycle), easy to visualize, and str
 
 > 📝 
 >
-> Internal microarchitecture of the SCHOLAR RISC-V **single-cycle** processor.<br>
+> Internal microarchitecture of the scholar-risc-v **single-cycle** processor.<br>
 > The arrows represent the flow of an instruction through the fetch–decode–execute–writeback stages.<br>
 > For readability, clock and reset signals are omitted. <br>
 > A `^` symbol at the bottom of a block indicates a sequential (clocked) element. <br>
@@ -83,7 +83,7 @@ However, sub-modules of this repository are distributed under their own licenses
 
 ## Supported RISC-V Instructions 
 
-This section lists all base integer instructions implemented in the **SCHOLAR RISC-V** processor, including both **RV32I** and **RV64I** sets.<br>
+This section lists all base integer instructions implemented in the **scholar-risc-v** processor, including both **RV32I** and **RV64I** sets.<br>
 Each instruction is presented with its mnemonic, format, description, and pseudocode operation.
 
 These instructions form the foundation of the processor’s execution capabilities — covering arithmetic, logic, control flow, and memory operations.<br>
@@ -362,7 +362,7 @@ Examples: **JAL**.
 
 ## Supported features and results
 
-This first version of **SCHOLAR RISC-V** implements the **RV32I** (and optionally **RV64I**) base integer instruction set, along with the mcycle **CSR** from the **Zicntr** extension, used for performance benchmarking.
+This first version of **scholar-risc-v** implements the **RV32I** (and optionally **RV64I**) base integer instruction set, along with the mcycle **CSR** from the **Zicntr** extension, used for performance benchmarking.
 
 The design provides a functional, minimal RISC-V processor suitable for education and early experimentation.<br>
 It forms the foundation upon which more advanced features — such as pipelining, forwarding, and branch prediction — will later be added.
@@ -373,8 +373,8 @@ Below is a summary of synthesis results on a PolarFire MPFS095T FPGA:
 
 | **Architecture**              | **Features**                                    | **CycleMark/MHz** | **FPGA Resources & Performance (PolarFire MPFS095T)**                          |
 | ----------------------------- | ----------------------------------------------- | ----------------- | ------------------------------------------------------------------------------ |
-| **RV32I + `mcycle` (Zicntr)** | Single-cycle RISC-V processor                   | 1.24              | LEs: 3248 (1093 FFs)<br>Fmax: 75 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
-| **RV64I + `mcycle` (Zicntr)** | Single-cycle RISC-V processor (64-bit datapath) | 1.05              | LEs: 6584 (2190 FFs)<br>Fmax: 69 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
+| **RV32I + `mcycle` (Zicntr)** | Single-cycle RISC-V processor                   | 1.24              | LEs: 3220 (1093 FFs)<br>Fmax: 80 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
+| **RV64I + `mcycle` (Zicntr)** | Single-cycle RISC-V processor (64-bit datapath) | 1.05              | LEs: 6545 (2139 FFs)<br>Fmax: 71 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
 
 <br>
 
@@ -393,7 +393,7 @@ Students can directly observe how every instruction interacts with hardware — 
 
 In future versions, the same base design will evolve step by step toward higher-performance architectures, showing how each optimization (such as pipelining or multi-issue) builds upon this simple foundation.
 
-The SCHOLAR RISC-V processor follows exactly this structure.<br>
+The scholar-risc-v processor follows exactly this structure.<br>
 In its current form, it is a **single-cycle**, **single-issue** implementation — meaning that one instruction is fully executed per clock cycle.<br>
 Each step (**fetch**, **decode**, **execute**, and **writeback**) happens sequentially, but all within the same clock period.
 
@@ -425,7 +425,7 @@ This architecture is simple and ideal for understanding the complete flow of ins
 
 <br>
 
-### Instruction and memory assumptions
+### Instruction and memory assumptions (riscv-core-harness)
 
 To simplify analysis and maintain full visibility:
   - The instruction and data memories are assumed to be ideal single-cycle memories — any access completes in one clock cycle.
@@ -1138,7 +1138,7 @@ This is a common technique in bare-metal embedded systems: when there is no oper
 
 ### Execution Flow - Conclusion
 
-Through this sequence of six instructions, the **SCHOLAR RISC-V** processor demonstrates the complete life cycle of instruction execution — from fetching and decoding to execution, memory access, and program counter update.
+Through this sequence of six instructions, the **scholar-risc-v** processor demonstrates the complete life cycle of instruction execution — from fetching and decoding to execution, memory access, and program counter update.
 
 Each instruction showcases a different aspect of the datapath:
   - **AUIPC** illustrates address computation and immediate handling.
@@ -1168,15 +1168,15 @@ This detailed exploration also highlights the inherent trade-offs in **single-cy
 
 ![SCHOLAR_RISC-V_resources](./img/SCHOLAR_RISC-V_32bit_resources.png)
 
-The performance of the **SCHOLAR RISC-V** processor is evaluated using three key indicators:
+The performance of the **scholar-risc-v** processor is evaluated using three key indicators:
   - CycleMark/MHz — a normalized performance score derived from CoreMark.
   - Maximum frequency (Fmax) — the highest achievable clock rate on the FPGA.
   - Parallelism — the number of threads that can be executed simultaneously.
 
 | **Architecture**              | **CycleMark/MHz** | **FPGA Resources & Performance (PolarFire MPFS095T)**                          |
 | ----------------------------- | ----------------- | ------------------------------------------------------------------------------ |
-| **RV32I + `mcycle` (Zicntr)** | 1.24              | LEs: 3248 (1093 FFs)<br>Fmax: 75 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
-| **RV64I + `mcycle` (Zicntr)** | 1.05              | LEs: 6584 (2190 FFs)<br>Fmax: 69 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
+| **RV32I + `mcycle` (Zicntr)** | 1.24              | LEs: 3220 (1093 FFs)<br>Fmax: 80 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
+| **RV64I + `mcycle` (Zicntr)** | 1.05              | LEs: 6545 (2139 FFs)<br>Fmax: 71 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
 
 <br>
 <br>
@@ -1221,8 +1221,8 @@ However, memory operations (LOAD and STORE) require two cycles to complete, whic
 ### Resource Utilization and Cost Insights
 
 From a resource perspective, the processor remains relatively compact:
-  - 3248 logic elements (1093 flip-flops) for **RV32I**.
-  - 6584 logic elements (2190 flip-flops) for **RV64I**.
+  - 3220 logic elements (1093 flip-flops) for **RV32I**.
+  - 6545 logic elements (2139 flip-flops) for **RV64I**.
   - No block RAMs (uSRAM/LSRAM).
   - No hardware multipliers or DSP blocks.
 
@@ -1248,7 +1248,7 @@ This is why most practical architectures, whether in ASICs or FPGAs, use dedicat
 
 ## Conclusion
 
-This first version of the **SCHOLAR RISC-V** processor deliberately focuses on implementing a simple and accessible **RISC-V** design.<br>
+This first version of the **scholar-risc-v** processor deliberately focuses on implementing a simple and accessible **RISC-V** design.<br>
 It prioritizes clarity, visibility, and simplicity over performance, providing a clear introduction to the inner workings of a processor through detailed diagrams and execution flow examples.
 
 Its limited performance will later be improved through future enhancements, each explained in terms of both benefits and trade-offs.<br>
