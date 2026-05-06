@@ -1278,13 +1278,15 @@ This is why most practical architectures, whether in ASICs or FPGAs, use dedicat
 
 ## Conclusion
 
-This first version of the **scholar-risc-v** processor deliberately focuses on implementing a simple and accessible **RISC-V** design.<br>
-It prioritizes clarity, visibility, and simplicity over performance, providing a clear introduction to the inner workings of a processor through detailed diagrams and execution flow examples.
+This first version of the **scholar risc-v** processor deliberately focuses on clarity, visibility, and simplicity rather than raw performance.<br>
+It provides a simple and accessible **RISC-V** implementation designed to introduce the inner workings of a processor through detailed diagrams and execution-flow examples.
 
-Its limited performance will later be improved through future enhancements, each explained in terms of both benefits and trade-offs.<br>
-These evolutions will serve as a foundation to introduce well-known optimization techniques such as **pipelining**, **hazard management**, and **out-of-order execution**.
+As a consequence of this **single-cycle** architecture, performance remains limited but easy to understand and measure. On the reference FPGA implementation, this version achieves approximately **1.24 CycleMark/MHz** × **80 MHz** = **99 CycleMark/s**.
 
-In the next iteration of this project, we will explore how **pipelining** can significantly (or not) increase performance — and analyze the cost of these improvements — while building upon the solid foundation established by this **single-cycle** design.
+Its limited performance is an expected consequence of the single-cycle architecture. Future versions will progressively improve this baseline, with each enhancement explained in terms of both benefits and trade-offs.<br>
+These evolutions will serve as a foundation to introduce well-known processor optimization techniques such as **pipelining**, **hazard management**, **branch prediction**, and eventually more advanced microarchitectural concepts.
+
+In the next iteration of this project, we will explore how **pipelining** canimprove the maximum clock frequency by splitting the long single-cycle critical path into shorter stages. We will also analyze why this does not automatically translate into a proportional performance gain, due to pipeline hazards, stalls, flushes, and additional control complexity.
 
 <br>
 
