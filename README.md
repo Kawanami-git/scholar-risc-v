@@ -376,6 +376,21 @@ Below is a summary of synthesis results on a PolarFire MPFS095T FPGA:
 | **RV32I + `mcycle` (Zicntr)** | Single-cycle RISC-V processor                   | 1.24              | LEs: 3220 (1093 FFs)<br>Fmax: 80 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
 | **RV64I + `mcycle` (Zicntr)** | Single-cycle RISC-V processor (64-bit datapath) | 1.05              | LEs: 6545 (2139 FFs)<br>Fmax: 71 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
 
+> 📝
+> Except for the **CycleMark/MHz**, these results are implementation-dependent.
+> Resource usage and Fmax are reported for the PolarFire MPFS095T FPGA with a
+> specific synthesis and place-and-route configuration.
+>
+> These numbers are useful mainly as relative comparison points between
+> scholar-risc-v core versions implemented under the same conditions. For
+> example, comparing the single-cycle and pipelined cores on the same FPGA
+> architecture helps highlight the resource cost, timing impact, and performance
+> trade-offs introduced by each microarchitectural change.
+>
+> They should not be interpreted as universal values or general performance
+> guarantees. Different FPGA families, speed grades, constraints, memory
+> implementations, and EDA tool versions may produce different results.
+
 <br>
 
 ---
@@ -1178,6 +1193,21 @@ The performance of the **scholar-risc-v** processor is evaluated using three key
 | **RV32I + `mcycle` (Zicntr)** | 1.24              | LEs: 3220 (1093 FFs)<br>Fmax: 80 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
 | **RV64I + `mcycle` (Zicntr)** | 1.05              | LEs: 6545 (2139 FFs)<br>Fmax: 71 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
 
+> 📝
+> Except for the **CycleMark/MHz**, these results are implementation-dependent.
+> Resource usage and Fmax are reported for the PolarFire MPFS095T FPGA with a
+> specific synthesis and place-and-route configuration.
+>
+> These numbers are useful mainly as relative comparison points between
+> **scholar-risc-v** core versions implemented under the same conditions. For
+> example, comparing the single-cycle and pipelined cores on the same FPGA
+> architecture helps highlight the resource cost, timing impact, and performance
+> trade-offs introduced by each microarchitectural change.
+>
+> They should not be interpreted as universal values or general performance
+> guarantees. Different FPGA families, speed grades, constraints, memory
+> implementations, and EDA tool versions may produce different results.
+
 <br>
 <br>
 
@@ -1205,7 +1235,7 @@ The longer this path, the slower the clock must be to ensure signals have enough
 Because this design executes all instruction stages in a single clock, its **critical path** necessarily spans almost the entire datapath.<br>
 This makes it extremely easy to understand and simulate, but inherently limits its operating frequency.
 
-In ASIC, where gate delays are far smaller, similar designs would easily exceed few hundred MHz.
+In an ASIC implementation, where standard-cell logic and dedicated routing are significantly faster than FPGA LUTs and programmable interconnects, similar designs could reasonably reach several hundred MHz, depending on the target technology, memory implementation, and timing constraints.
 
 <br>
 <br>
@@ -1232,7 +1262,7 @@ However, a closer look reveals that a third of these logic elements are used sol
 That’s 1024 flip-flops dedicated to storage alone — not counting additional control logic.<br>
 This highlights a common reality in digital design: **Memory structures, even small ones, are among the most resource-expensive components in digital systems — especially on FPGAs**.
 
-This is why most practical architectures, whether in ASICs or FPGAs, use dedicated memory blocks (BRAMs, uSRAMs, etc.) instead of generic logic for register files and caches.
+This is why most practical architectures, whether in ASICs or FPGAs, use dedicated memory blocks (BRAMs, uSRAMs, etc.) instead of generic logic for caches and memories.
 
 <br>
 
@@ -1254,7 +1284,7 @@ It prioritizes clarity, visibility, and simplicity over performance, providing a
 Its limited performance will later be improved through future enhancements, each explained in terms of both benefits and trade-offs.<br>
 These evolutions will serve as a foundation to introduce well-known optimization techniques such as **pipelining**, **hazard management**, and **out-of-order execution**.
 
-In the next iteration of this project, we will explore how **pipelining** can significantly increase performance — and analyze the cost of these improvements — while building upon the solid foundation established by this **single-cycle** design.
+In the next iteration of this project, we will explore how **pipelining** can significantly (or not) increase performance — and analyze the cost of these improvements — while building upon the solid foundation established by this **single-cycle** design.
 
 <br>
 
