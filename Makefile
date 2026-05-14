@@ -4,8 +4,8 @@
 # \file       Makefile
 # \brief      Top-level build & run orchestration for SCHOLAR RISC-V.
 # \author     Kawanami
-# \version    2.2
-# \date       30/04/2026
+# \version    2.3
+# \date       14/05/2026
 #
 # \details
 #   This Makefile is the main entry point for the SCHOLAR RISC-V single-cycle
@@ -45,6 +45,7 @@
 # | 2.0     | 02/04/2026 | Kawanami | Split all targets into dedicated Makefiles.                     |
 # | 2.1     | 23/04/2026 | Kawanami | Add 'mpfs_disco_kit_help' to the 'help' Target.                 |
 # | 2.2     | 30/04/2026 | Kawanami | Delegate shared flows to core harness.   						  |
+# | 2.3     | 14/05/2026 | Kawanami | Update Microchip P&R parameters. 		  						  |
 # ********************************************************************************
 # */
 
@@ -71,7 +72,7 @@ WORK_DIR 				?= $(ROOT_DIR)work/
 #################################### Microchip Build Configuration ####################################
 
 # First Libero place-and-route seed used for timing exploration.
-PNR_SEED 				?= 3
+PNR_SEED 				?= 16
 
 # Number of Libero place-and-route passes to run.
 PNR_PASSES 				?= 1

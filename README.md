@@ -373,8 +373,8 @@ Below is a summary of synthesis results on a PolarFire MPFS095T FPGA:
 
 | **Architecture**              | **Features**                                    | **CycleMark/MHz** | **FPGA Resources & Performance (PolarFire MPFS095T)**                          |
 | ----------------------------- | ----------------------------------------------- | ----------------- | ------------------------------------------------------------------------------ |
-| **RV32I + `mcycle` (Zicntr)** | Single-cycle RISC-V processor                   | 1.24              | LEs: 3220 (1093 FFs)<br>Fmax: 80 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
-| **RV64I + `mcycle` (Zicntr)** | Single-cycle RISC-V processor (64-bit datapath) | 1.05              | LEs: 6545 (2139 FFs)<br>Fmax: 71 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
+| **RV32I + `mcycle` (Zicntr)** | Single-cycle RISC-V processor                   | 1.24              | LEs: 3143 (1093 FFs)<br>Fmax: 77 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
+| **RV64I + `mcycle` (Zicntr)** | Single-cycle RISC-V processor (64-bit datapath) | 1.05              | LEs: 6542 (2118 FFs)<br>Fmax: 67 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
 
 > 📝
 > Except for the **CycleMark/MHz**, these results are implementation-dependent.
@@ -1190,8 +1190,8 @@ The performance of the **scholar-risc-v** processor is evaluated using three key
 
 | **Architecture**              | **CycleMark/MHz** | **FPGA Resources & Performance (PolarFire MPFS095T)**                          |
 | ----------------------------- | ----------------- | ------------------------------------------------------------------------------ |
-| **RV32I + `mcycle` (Zicntr)** | 1.24              | LEs: 3220 (1093 FFs)<br>Fmax: 80 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
-| **RV64I + `mcycle` (Zicntr)** | 1.05              | LEs: 6545 (2139 FFs)<br>Fmax: 71 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
+| **RV32I + `mcycle` (Zicntr)** | 1.24              | LEs: 3143 (1093 FFs)<br>Fmax: 77 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
+| **RV64I + `mcycle` (Zicntr)** | 1.05              | LEs: 6542 (2118 FFs)<br>Fmax: 67 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
 
 > 📝
 > Except for the **CycleMark/MHz**, these results are implementation-dependent.
@@ -1251,13 +1251,12 @@ However, memory operations (LOAD and STORE) require two cycles to complete, whic
 ### Resource Utilization and Cost Insights
 
 From a resource perspective, the processor remains relatively compact:
-  - 3220 logic elements (1093 flip-flops) for **RV32I**.
-  - 6545 logic elements (2139 flip-flops) for **RV64I**.
+  - 3143 logic elements (1093 flip-flops) for **RV32I**.
+  - 6542 logic elements (2118 flip-flops) for **RV64I**.
   - No block RAMs (uSRAM/LSRAM).
   - No hardware multipliers or DSP blocks.
 
-At first glance, this seems lightweight.<br>
-However, a closer look reveals that a third of these logic elements are used solely for the General-Purpose Registers (**GPR**) — the 32 × 32-bit (for 32-bit architecture) register file required by the RISC-V ISA.
+A closer look reveals that a third of these logic elements are used solely for the General-Purpose Registers (**GPR**) — the 32 × 32-bit (for 32-bit architecture) register file required by the RISC-V ISA.
 
 That’s 1024 flip-flops dedicated to storage alone — not counting additional control logic.<br>
 This highlights a common reality in digital design: **Memory structures, even small ones, are among the most resource-expensive components in digital systems — especially on FPGAs**.
@@ -1281,7 +1280,7 @@ This is why most practical architectures, whether in ASICs or FPGAs, use dedicat
 This first version of the **scholar risc-v** processor deliberately focuses on clarity, visibility, and simplicity rather than raw performance.<br>
 It provides a simple and accessible **RISC-V** implementation designed to introduce the inner workings of a processor through detailed diagrams and execution-flow examples.
 
-As a consequence of this **single-cycle** architecture, performance remains limited but easy to understand and measure. On the reference FPGA implementation, this version achieves approximately **1.24 CycleMark/MHz** × **80 MHz** = **99 CycleMark/s**.
+As a consequence of this **single-cycle** architecture, performance remains limited but easy to understand and measure. On the reference FPGA implementation, this version achieves approximately **1.24 CycleMark/MHz** × **77 MHz** = **95.5 CycleMark/s**.
 
 Its limited performance is an expected consequence of the single-cycle architecture. Future versions will progressively improve this baseline, with each enhancement explained in terms of both benefits and trade-offs.<br>
 These evolutions will serve as a foundation to introduce well-known processor optimization techniques such as **pipelining**, **hazard management**, **branch prediction**, and eventually more advanced microarchitectural concepts.
