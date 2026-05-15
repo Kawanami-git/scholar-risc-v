@@ -1,12 +1,12 @@
-# SCHOLAR RISC-V Processor – Pipeline Microarchitecture
+# scholar risc-v Processor – Pipeline Microarchitecture
 
-This document introduces the **SCHOLAR RISC-V** processor in its **pipelined** version.<br>
-Designed as an educational project, **SCHOLAR RISC-V** illustrates the internal workings of a RISC-V processor while serving as a scalable learning platform for students in computer architecture and digital systems.
+This document introduces the **scholar risc-v** processor in its **pipelined** version.<br>
+Designed as an educational project, **scholar risc-v** illustrates the internal workings of a RISC-V processor while serving as a scalable learning platform for students in computer architecture and digital systems.
 
 This document provides an overview of the **pipelined** microarchitecture, lists the supported instructions, explains how the processor operates at this stage of development, and discusses both its performance and limitations. Finally, it outlines the next planned steps for the project’s evolution.
 
-The **pipelined SCHOLAR RISC-V** processor represents the first **enhancement** of the microarchitecture.<br>
-If you have not seen the first version of this core, which explains the processor’s basic operation, please refer to the [Single-Cycle](https://github.com/Kawanami-git/SCHOLAR_RISC-V/tree/Single-Cycle) version.
+The **pipelined scholar risc-v** processor represents the first **enhancement** of the microarchitecture.<br>
+If you have not seen the first version of this core, which explains the processor’s basic operation, please refer to the [Single-Cycle](https://github.com/Kawanami-git/scholar-risc-v/tree/Single-Cycle) version.
 
 This **pipelined** version remains **single-issue** (only one instruction is issued per cycle).<br>
 At this stage, the processor supports the **RV32I** and **RV64I** base instruction sets, along with the `mcycle` and two additional performance counters: `mhpmcounter3` (stall cycles) and `mhpmcounter4` (taken branches). These **CSRs** are used for CycleMark benchmarking.
@@ -17,7 +17,7 @@ A **pipelined** microarchitecture means that each instruction is completed over 
 
 > 📝
 >
-> Internal microarchitecture of the SCHOLAR RISC-V **pipelined** processor.<br>
+> Internal microarchitecture of the scholar risc-v **pipelined** processor.<br>
 > The arrows represent the flow of instructions through the **Fetch**–**Decode**–**Exe**–**Mem**–**Writeback** stages.<br>
 > For readability, clock and reset signals are omitted.<br>
 > A `^` symbol at the bottom of a block indicates a sequential (clocked) element.<br>
@@ -50,7 +50,7 @@ A **pipelined** microarchitecture means that each instruction is completed over 
 - [Controller](#controller)
 - [Execution flow examples](#execution-flow-examples)
 - [Performance, Cost and Limitations](#performance-cost-and-limitations)
-- [Conclusion](#conclusion)
+- [Conclusion](#conclusion-2)
 
 <br>
 
@@ -80,7 +80,7 @@ However, part of this repository (CycleMark) is derived from the [CoreMark repos
 
 ## Supported RISC-V Instructions 
 
-This section lists all base integer instructions implemented in the **SCHOLAR RISC-V** processor, including both **RV32I** and **RV64I** sets.<br>
+This section lists all base integer instructions implemented in the **scholar risc-v** processor, including both **RV32I** and **RV64I** sets.<br>
 Each instruction is presented with its mnemonic, format, description, and pseudocode operation.
 
 These instructions form the foundation of the processor’s execution capabilities — covering arithmetic, logic, control flow, and memory operations.<br>
@@ -95,6 +95,11 @@ Together, they define the minimum working instruction set that allows a program 
 > Arithmetic instructions in **RV32I** always operate on 32-bit values.<br>
 > When working in **RV64I**, the same logic applies — but operands and results are sign-extended to 64 bits.<br>
 > Additional instructions introduced by **RV64I** specifically handle 32-bit operations within a 64-bit architecture.
+
+<br>
+
+<details>
+<summary>Supported RISC-V Instructions</summary>
 
 <br>
 
@@ -232,6 +237,8 @@ The new instructions introduced by **RV64I** enable explicit 32-bit arithmetic a
 
 <br>
 
+</details>
+
 ---
 
 <br>
@@ -247,6 +254,13 @@ Understanding these formats is key to interpreting instructions and designing th
 
 Each format divides the 32-bit instruction word into fields that identify operands, immediates, and operation types.<br>
 Depending on the instruction type, some fields may be reused or interpreted differently.
+
+<br>
+
+<details>
+<summary>Instruction Formats</summary>
+
+<br>
 
 | **Field**          | **Purpose**                                                                 |
 | ------------------ | --------------------------------------------------------------------------- |
@@ -336,6 +350,8 @@ Examples: **JAL**.
 
 <br>
 
+</details>
+
 ---
 
 <br>
@@ -346,7 +362,7 @@ Examples: **JAL**.
 
 ## Supported features and results
 
-This version of **SCHOLAR RISC-V** implements the **RV32I** (and optionally **RV64I**) base integer instruction set, along with the `mcycle`, `mhpmcounter3` and `mhpmcounter4` **CSR** from the **Zicntr** extension, used for performance benchmarking.
+This version of **scholar risc-v** implements the **RV32I** (and optionally **RV64I**) base integer instruction set, along with the `mcycle`, `mhpmcounter3` and `mhpmcounter4` **CSR** from the **Zicntr** extension, used for performance benchmarking.
 
 <br>
 
@@ -354,8 +370,8 @@ Below is a summary of synthesis results on a PolarFire MPFS095T FPGA:
 
 | **Architecture**              | **Features**                                    | **CycleMark/MHz** | **FPGA Resources & Performance (PolarFire MPFS095T)**                          |
 | ----------------------------- | ----------------------------------------------- | ----------------- | ------------------------------------------------------------------------------ |
-| **RV32I + `CSR*` (Zicntr)** | single-issue pipelined RISC-V processor | 0.55             | LEs: 2023 (782 FFs)<br>Fmax: 192 MHz<br>uSRAM: 6<br>LSRAM: 0<br>Math blocks: 0 |
-| **RV64I + `CSR*` (Zicntr)** | single-issue pipelined RISC-V processor (64-bit datapath) | 0.45              | LEs: 3965 (1231 FFs)<br>Fmax: 150 MHz<br>uSRAM: 12<br>LSRAM: 0<br>Math blocks: 0 |
+| **RV32I + `CSR*` (Zicntr)** | single-issue pipelined RISC-V processor | 0.55             | LEs: 3239 (1655 FFs)<br>Fmax: 181 MHz<br>uSRAM: 6<br>LSRAM: 0<br>Math blocks: 0 |
+| **RV64I + `CSR*` (Zicntr)** | single-issue pipelined RISC-V processor (64-bit datapath) | 0.45              | LEs: 6685 (3158 FFs)<br>Fmax: 153 MHz<br>uSRAM: 12<br>LSRAM: 0<br>Math blocks: 0 |
 
 > 📝
 >
@@ -422,10 +438,20 @@ This choice highlights the main pros and cons of a **pipelined** architecture wh
 
 ### Instruction and data memories assumptions
 
-To simplify analysis and maintain full visibility:
-  - The instruction and data memories are assumed to be ideal single-cycle memories — any access completes in one clock cycle.
-  - There is no cache or memory hierarchy in this version.
-  - This simplification aligns well with microcontroller-like architectures, where simplicity and predictable execution is often more valuable than high throughput.
+<details>
+<summary></summary>
+
+To simplify the analysis and keep full visibility:
+- Instruction and data memories are assumed to behave like ideal **single-cycle** memories: every access completes in one clock cycle.
+- `gnt` is not used in this design. Only `rvalid` is meaningful.
+- There is no cache or memory hierarchy in this version.
+- This simplification matches microcontroller-like designs, where simplicity and predictable execution are often more valuable than peak throughput.
+
+> 📝 If non-ideal memories are used, the memory shall follow a simple timing rule:
+>   - the response/acceptance (`rvalid`) must be asserted in the **same cycle** as the request (`req`),
+>   - and the corresponding `rdata` is returned **one cycle after** `rvalid` is asserted.
+
+</details>
 
 <br>
 <br>
@@ -434,7 +460,7 @@ To simplify analysis and maintain full visibility:
 
 As shown in the **Single-Cycle** version, one of the main limitations of the core is its maximum operating frequency.<br>
 This limitation comes from a long combinational path that can span from the instruction memory all the way to the data memory (e.g., during a store operation):<br>
-Instruction memory → **Fetch** → **Decode** → **Execute** → **Writeback** → Data memory.
+Instruction memory → **Fetch** → **Decode** → **Execute** → **Writeback** → Instruction/Data memory.
 
 The goal of a **pipelined** microarchitecture is to break this long combinational path by inserting registers between stages.<br>
 With this 5-stage **pipeline**, **pipeline** registers are inserted between:
@@ -445,7 +471,8 @@ With this 5-stage **pipeline**, **pipeline** registers are inserted between:
 
 These registers capture the outputs of one stage so they can be processed by the next stage on the following cycle. As a result, each stage only needs to meet timing for a smaller piece of logic.
 
-This significantly reduces the processor’s **critical path** and enables higher clock frequencies.
+This significantly reduces the processor's **critical path** and enables higher clock frequencies.<br>
+However, this improvement is not free: the additional pipeline stages introduce new overheads, such as pipeline hazards, stalls, and flush penalties, which can reduce the overall performance gain.
 
 <br>
 <br>
@@ -464,6 +491,9 @@ This microarchitecture does not implement any mitigation: instead, the **pipelin
 <br>
 
 #### RAW: ALU → use (back-to-back arithmetic)
+
+<details>
+<summary></summary>
 
 The most common RAW hazard is when an ALU instruction produces a register that is immediately reused:
 ```bash
@@ -499,9 +529,14 @@ In general, the farther the consumer instruction is from its producer, the small
 
 For this design (no forwarding, stall in **Decode**), the same reasoning applies to other RAW hazards (e.g., load-use, store-data, branch operand): the **pipeline** is blocked until the required value becomes visible in the register file.
 
+</details>
+
 <br>
 
 #### RAW: Load → use (load-use hazard)
+
+<details>
+<summary></summary>
 
 Another RAW hazard can occur with loads:
 ```bash
@@ -512,9 +547,14 @@ add x4, x3, x1      # consumes x3 immediately (RAW)
 Like the RAW(ALU) hazard, the loaded data must be written in the GPRs to be available for the next instruction.<br>
 The `add` instruction has to wait 3 cycles for the `lw` to complete and provide the result in the GPRs.
 
+</details>
+
 <br>
 
 #### RAW on store data
+
+<details>
+<summary></summary>
 
 A store also consumes register data, so it can be the consumer side of a RAW hazard:
 ```
@@ -524,9 +564,14 @@ sw  x3, 0(x5)       # consumes x3 as store data (RAW)
 
 Even though the store does not write a destination register, it still needs the value of x3 to write it to memory.
 
+</details>
+
 <br>
 
 #### RAW on address / branch operands (common variants)
+
+<details>
+<summary></summary>
 
 RAW hazards also appear when a register is reused as an address base or as a branch operand:
 ```bash
@@ -541,14 +586,22 @@ beq x3, x0, label   # consumes x3 for comparison (RAW)
 
 In both cases, the consumer needs the most recent value, which require stalling the **pipeline** until the GPRs are updated (3 cycles, like the other RAWs).
 
+</details>
+
 <br>
 
 #### Note on WAR / WAW hazards
+
+<details>
+<summary></summary>
 
 Other data hazard types exist in general (WAR, WAW), but they do not occur in a simple in-order **pipeline** where:
   - registers are read in program order.
   - register writes are committed in program order.
 
+</details>
+
+<br>
 <br>
 
 ### Instruction flow changes (control hazards)
@@ -561,7 +614,8 @@ In a **single-cycle** core, when the flow changes, the Program Counter (PC) is u
 In this **pipeline**, the next PC value is only known once the instruction reaches the **Exe** stage.<br>
 Therefore, while the jump/branch is being executed, **Fetch** and **Decode** have already speculatively fetched the sequential instructions at `PC + 4` and `PC + 8`.
 
-Example:
+<details>
+<summary>Example:</summary>
 
 ```bash
 a: jal function
@@ -598,6 +652,8 @@ With this organization, the first correct-path instruction (`f`) reaches **Decod
 
 <br>
 
+</details>
+
 ---
 
 <br>
@@ -607,6 +663,9 @@ With this organization, the first correct-path instruction (`f`) reaches **Decod
 <br>
 
 ## Fetch
+
+<details>
+<summary></summary>
 
 **Fetch** (IF) retrieves one instruction per cycle from the instruction memory and forwards it to **Decode** (ID).<br>
 It uses the `pc` generated by the **controller** to address the next instruction to fetch, and it is designed to keep a continuous flow of valid instructions into the pipeline whenever downstream stages are ready.
@@ -690,6 +749,8 @@ Despite these additions, **Fetch** remains intentionally simple and achieves its
 
 <br>
 
+</details>
+
 ---
 
 <br>
@@ -700,11 +761,14 @@ Despite these additions, **Fetch** remains intentionally simple and achieves its
 
 ## Decode
 
+<details>
+<summary></summary>
+
 **Decode** is the central “control hub” of the processor.<br>
 Its purpose is to translate the binary instruction fetched from memory into meaningful hardware actions — determining what operation to perform, which operands to use, and where the result should go.<br>
 
 **Decode** is composed of the following sub-blocks:
-  - *if_id* - registers the stage inputs.
+  - *if2id* - registers the stage inputs.
   - *ctrl* – generates the stage `ready`/`valid` handshake and stalls on RAW hazards (rs*_dirty).
   - *instr_decoder* – extracts instruction fields (`opcode`, `funct3`, `funct7`, `rs1`, `rs2`, `rd`, `csr_raddr`).
   - *operands_gen* – builds operand values (`op1`, `op2`, `op3`) and expands immediates.
@@ -716,7 +780,7 @@ Its purpose is to translate the binary instruction fetched from memory into mean
 
 <br>
 
-### if_id
+### if2id
 
 The *Fetch–Decode* pipeline register breaks the combinational path between **Fetch** and **Decode** by saving the `if2id` bundle (instruction + PC) into registers.<br>
 
@@ -840,10 +904,12 @@ All decoded information (PC, operands and control fields) is provided to **Exe**
 
 **Decode** transforms the instruction bits into actionable signals that orchestrate the datapath in the subsequent stages.<br>
 It is almost identical to the **single-cycle** version, with two pipeline-specific additions:
-  - *if_id*, which registers the incoming instruction/PC bundle and breaks the combinational path from **Fetch** to **Decode**.
+  - *if2id*, which registers the incoming instruction/PC bundle and breaks the combinational path from **Fetch** to **Decode**.
   - *ctrl*, which implements the stage handshake and interlock, allowing **Decode** to stall on RAW hazards (dirty operands) or when **Exe** applies back-pressure.
 
 <br>
+
+</details>
 
 ---
 
@@ -855,18 +921,21 @@ It is almost identical to the **single-cycle** version, with two pipeline-specif
 
 ## Exe
 
+<details>
+<summary></summary>
+
 **Exe** (Execute) performs the actual computation requested by the instruction.<br>
 It receives operands and control fields from **Decode** through the `id2exe` bundle, executes the selected arithmetic / logical / comparison operation, and produces an output result.
 
 Moreover, **Exe** provides to the **Controller** the `exe2ctrl` bundle, used for data hazard, control hazard, and PC management.
 
 **Exe** is composed of three logical parts:
-  - *id_exe* – registers the stage inputs (id2exe) and injects NOPs when needed.
+  - *id2exe* – registers the stage inputs (id2exe) and injects NOPs when needed.
   - *ctrl* – propagates back-pressure from **Mem** to previous stages.
   - *alu* – performs the actual computation.
 
 
-### id_exe
+### id2exe
 
 The *Decode–Exe* **pipeline** register breaks the combinational path between **Decode** and **Exe** by saving the `id2exe` bundle into `id2exe_q` registers.<br>
 
@@ -931,6 +1000,8 @@ From a design perspective:
 
 <br>
 
+</details>
+
 ---
 
 <br>
@@ -940,6 +1011,9 @@ From a design perspective:
 <br>
 
 ## Mem
+
+<details>
+<summary></summary>
 
 **Mem** (memory) is responsible for executing the data-memory side effects of an instruction.<br>
 It receives the `exe2mem` bundle from **Exe**, and, depending on `mem_ctrl`, it:
@@ -951,14 +1025,14 @@ It receives the `exe2mem` bundle from **Exe**, and, depending on `mem_ctrl`, it:
 This stage also implements a `ready`/`valid` handshake to support back-pressure (even though the current memories are modeled as “perfect”).
 
 **Mem** is composed of four blocks:
-  - *exe_mem* – registers the incoming `exe2mem` payload and injects NOPs when no valid uop is provided.
+  - *exe2mem* – registers the incoming `exe2mem` payload and injects NOPs when no valid uop is provided.
   - *exe_valid_registration* - Registers the `valid` signal for exe to use it as a `valid` signal for **Writeback** if no memory operation is needed.
   - *ctrl* – produces the stage `ready`/`valid` signals.
   - *mem_controller* - generates the actual memory control signals. 
 
 <br>
 
-### exe_mem
+### exe2mem
 
 The *Exe–Mem* pipeline register breaks the combinational path between **Exe** and **Mem** by capturing the `exe2mem` bundle into `exe2mem_q`.<br>
 
@@ -1058,6 +1132,8 @@ It also provides the necessary `ready`/`valid` handshake for future memories tha
 
 <br>
 
+</details>
+
 ---
 
 <br>
@@ -1068,12 +1144,15 @@ It also provides the necessary `ready`/`valid` handshake for future memories tha
 
 ## Writeback
 
+<details>
+<summary></summary>
+
 **Writeback** is the final step in the instruction flow.<br>
 Its role is to apply the results of the executed instruction to the processor’s architectural state — primarily by updating the General Purpose Registers (GPRs) and the Control & Status Registers (CSRs).<br>
 It ensures that every valid micro-operation eventually produces a visible effect (when applicable).
 
 Internally, it contains two main functional parts:
-  - *mem_wb* - registers the incoming `mem2wb` payload and injects NOPs when no valid uop is provided.
+  - *mem2wb* - registers the incoming `mem2wb` payload and injects NOPs when no valid uop is provided.
   - *rd_gen* – computes the final data to commit (GPR path).
 
 As the CSR write path is quite simple, it is handled out of a block. The idea is:
@@ -1085,7 +1164,7 @@ Moreover, as **Exe** and **Mem**, the **Writeback** stage provides to the **Cont
 
 <br>
 
-### mem_wb
+### mem2wb
 
 The *Mem–Writeback* pipeline register breaks the combinational path between **Mem** and **Writeback** by capturing the `mem2wb` bundle into `mem2wb_q`.
 
@@ -1150,6 +1229,8 @@ This stage closes the instruction execution loop and makes results architectural
 
 <br>
 
+</details>
+
 ---
 
 <br>
@@ -1159,6 +1240,9 @@ This stage closes the instruction execution loop and makes results architectural
 <br>
 
 ## Controller
+
+<details>
+<summary></summary>
 
 The **Controller** is the global orchestration logic of the core.<br>
 Unlike **Fetch**/**Decode**/**Exe**/**Mem**/**Writeback**, it is not a pipeline stage producing an *_2_* bundle. Instead, it supervises the whole pipeline by:
@@ -1274,6 +1358,8 @@ With this organization, the pipeline remains simple and pedagogical, while still
 
 <br>
 
+</details>
+
 ---
 
 <br>
@@ -1283,6 +1369,9 @@ With this organization, the pipeline remains simple and pedagogical, while still
 <br>
 
 ## Execution flow examples
+
+<details>
+<summary></summary>
 
 For these exemples, the `start.S` bootloader has been executed on the core:
 
@@ -1311,6 +1400,9 @@ Its execution flow can be summarized as follows:
   - After the execution of main, loop to keep a known step (**j**)
 
 ### Data hazard
+
+<details>
+<summary></summary>
 
 ![SCHOLAR_RISC-V_data_hazard](./img/SCHOLAR_RISC-V_data_hazard.png)
 
@@ -1392,10 +1484,15 @@ Normal pipeline flow is restored:
 
 This trace illustrates the core’s interlock strategy: once a destination register is marked dirty when an instruction enters the pipeline, Decode stalls any dependent instruction until **Writeback** clears the dirty flag and the new value becomes visible in the register file.
 
+</details>
+
 <br>
 <br>
 
 ### Control hazard
+
+<details>
+<summary></summary>
 
 ![SCHOLAR_RISC-V_control_hazard](./img/SCHOLAR_RISC-V_control_hazard.png)
 
@@ -1463,18 +1560,25 @@ From here, the pipeline resumes normal sequential execution starting from the ju
 
 This trace illustrates the control-hazard strategy of the core: jumps and taken branches are resolved in **Exe**. When a redirection is required, **CTRL** asserts a one-cycle flush (`softresetn`) to discard younger wrong-path instructions and restart fetching from the redirected `PC`.
 
+</details>
+
 <br>
 <br>
 
 ### Execution Flow - Conclusion
 
-This short boot sequence highlights the two main drawbacks introduced by a basic pipelined microarchitecture and the simple mechanisms used in **SCHOLAR RISC-V** to handle them.
+<details>
+<summary></summary>
+
+This short boot sequence highlights the two main drawbacks introduced by a basic pipelined microarchitecture and the simple mechanisms used in **scholar risc-v** to handle them.
 
 - **Data hazards (RAW)** are handled by interlocking **Decode**: dependent instructions are stalled until the producer commits its result in **Writeback**.
 - **Control hazards** are handled by flushing the front-end when a jump or taken branch is resolved in **Exe**, then restarting fetch from the redirected PC.
 
 In both cases, correctness is preserved at the cost of **lost cycles**: cycles that could have been used to retire useful instructions are instead spent stalling or flushing, reducing the overall throughput of the core.
 
+</details>
+</details>
 <br>
 
 ---
@@ -1487,9 +1591,12 @@ In both cases, correctness is preserved at the cost of **lost cycles**: cycles t
 
 ## Performance, Cost and Limitations
 
+<details>
+<summary></summary>
+
 ![SCHOLAR_RISC-V_resources](./img/SCHOLAR_RISC-V_32bit_resources.png)
 
-As for the **single-cycle** version, the performance of the **SCHOLAR RISC-V** processor is evaluated using three key indicators:
+As for the **single-cycle** version, the performance of the **scholar risc-v** processor is evaluated using three key indicators:
   - **CycleMark/MHz** — a normalized performance score derived from CoreMark.
   - **Maximum frequency (Fmax)** — the highest achievable clock rate on the FPGA.
   - **Parallelism** — the number of hardware threads that can be executed simultaneously.
@@ -1498,27 +1605,28 @@ As for the **single-cycle** version, the performance of the **SCHOLAR RISC-V** p
 
 | **Architecture**                  | **CycleMark/MHz** | **FPGA Resources & Performance (PolarFire MPFS095T)**                          |
 |----------------------------------|------------------:|--------------------------------------------------------------------------------|
-| **RV32I + `CSR*` (Zicntr)**      | 0.55              | LEs: 2023 (782 FFs)<br>Fmax: 192 MHz<br>uSRAM: 6<br>LSRAM: 0<br>Math blocks: 0 |
-| **RV64I + `mcycle` (Zicntr)**    | 0.45              | LEs: 3965 (1231 FFs)<br>Fmax: 150 MHz<br>uSRAM: 12<br>LSRAM: 0<br>Math blocks: 0 |
+| **RV32I + `CSR*` (Zicntr)**      | 0.55              | LEs: 3239 (1655 FFs)<br>Fmax: 181 MHz<br>uSRAM: 6<br>LSRAM: 0<br>Math blocks: 0 |
+| **RV64I + `CSR*` (Zicntr)**    | 0.45              | LEs: 6685 (3158 FFs)<br>Fmax: 153 MHz<br>uSRAM: 12<br>LSRAM: 0<br>Math blocks: 0 |
 
-> 📝 `CSR*`: `mcycle`, `mhpmcounter3` and `mhpmcounter4`.
+> 📝 `CSR*`: only `mcycle` is enabled in the synthesized implementation.
+> Additional performance counters such as `mhpmcounter3` and `mhpmcounter4`
+> are disabled to reduce timing and resource overhead.
 
 <br>
 <br>
 
 ### CycleMark/MHz
 
-The CycleMark/MHz score represents the average number of benchmark iterations achieved per MHz of clock frequency.  
-It can be seen as a practical indicator of the achieved **IPC** (instructions per cycle) under the benchmark workload.
-
-The **RV32I** pipelined core achieves **0.55** CycleMark/MHz (versus **1.24** for the **single-cycle** version), which corresponds to a significant performance drop (**~56%**) in terms of “useful work per cycle”.
+The **RV32I** pipelined core achieves a significantly lower CycleMark/MHz score than the
+**single-cycle** version. This means that, although the pipeline reaches a much higher clock
+frequency, it performs less useful work per cycle.
 
 ![cyclemark](./img/cyclemark.png)
 
 This is the trade-off of increasing the maximum operating frequency.<br>
 As shown in the plot, among the **1,829,338** cycles required to execute one CycleMark iteration:
 - **658,179** cycles are lost due to **data hazard** handling (**Decode** stalls),
-- **145,975 × 3 = 437,925** cycles are lost due to **control hazard** handling (front-end flush on taken control-flow).
+- **437,925** cycles are lost due to **control hazard** handling (front-end flush on taken control-flow).
 
 This represents **1,096,104** cycles (more than half the total) where the core is not retiring useful instructions, explaining why CycleMark/MHz is significantly lower than in the **single-cycle** version.
 
@@ -1530,7 +1638,9 @@ Comparison data (CoreMark scores, which CycleMark is derived from) can be found 
 
 ### Maximum Frequency
 
-In return to a lower CycleMark/MHz score, this microarchitecture provides a higher frequency (**192 MHz**) than the **single-cycle** version (**74 MHz**), allowing more cycles per second.
+In exchange for a lower CycleMark/MHz score, this microarchitecture reaches more than twice
+the maximum frequency of the **single-cycle** version in the current measurements, allowing
+the core to execute more clock cycles per second.
 
 The current critical path is:  
 `data memory → Writeback → GPRs`  
@@ -1552,17 +1662,24 @@ As shown earlier, the current implementation has an IPC below `1` due to hazard 
 
 ### Resource Utilization and Cost Insights
 
-From a resource perspective, the processor appears more compact than the **single-cycle** version:
-  - 2023 logic elements (782 as flip-flops) for **RV32I**.
-  - 3965 logic elements (1231 as flip-flops) for **RV64I**.
-  - A few uSRAM blocks for the GPRs.
+From a resource perspective, the pipelined core has a higher structural cost than the
+**single-cycle** version because it introduces additional pipeline registers and control logic.
+
+The measured resource usage for this implementation is:
+  - 3239 logic elements (1655 FFs) for **RV32I**.
+  - 6685 logic elements (3158 FFs) for **RV64I**.
   - No hardware multipliers or DSP blocks.
 
-This may seem counter-intuitive, but the explanation is simple: in the **single-cycle** version, the GPRs were intentionally implemented using LUTs to highlight their cost (roughly one third of the core).<br>
-In the **pipelined** version, the GPRs are implemented using the FPGA uSRAM, which removes a large LUT cost (e.g., **~1024 LUTs** for a 32×32 register file).<br>
-The remaining flip-flops are mostly used to register bundles between pipeline stages.
+Most of the additional flip-flops come from the pipeline registers inserted between stages
+(**Fetch/Decode**, **Decode/Exe**, **Exe/Mem**, and **Mem/Writeback**). These registers are
+required to break the long combinational path of the single-cycle design and increase the
+maximum clock frequency.<br>
+The additional combinational logic mainly comes from the controller, which handles pipeline
+stalls on data hazards and flushes on control-flow changes.
 
 <br>
+
+</details>
 
 ---
 
@@ -1574,17 +1691,26 @@ The remaining flip-flops are mostly used to register bundles between pipeline st
 
 ## Conclusion
 
-The **pipelined** version of the **SCHOLAR RISC-V** processor focuses on improving clock frequency.  
-Even though this goal is achieved (**~159%** improvement), the overall improvement is limited:
+The **pipelined** version of the **scholar risc-v** processor focuses on improving clock
+frequency.
 
-- Pipeline: `192 MHz × 0.55 CycleMark/MHz ≈ 105.6 CycleMark/s`
-- Single-cycle: `74 MHz × 1.24 CycleMark/MHz ≈ 91.8 CycleMark/s`
+This goal is achieved: the pipelined core reaches a significantly higher maximum frequency
+than the **single-cycle** version. However, the overall performance improvement remains
+limited because the core performs less useful work per cycle.
 
-This limitation is mainly caused by the drawbacks of this simple pipeline implementation: **RAW data hazards** (stalls) and **control hazards** (flushes).
+Detailed comparison values across **scholar risc-v** microarchitectures are summarized in the
+[main branch README](https://github.com/Kawanami-git/scholar-risc-v/tree/main#project-organization).
 
-This does not mean pipelining is a wrong optimization strategy — it is simply incomplete on its own.<br>
-The next iteration of this project will focus on mitigating data hazards (e.g., forwarding/bypassing), and studying the implementation cost, benefits, and trade-offs.<br>
-The primary goal will be to reduce the number of stall cycles, increase CycleMark/MHz, and therefore improve the overall CycleMark/s of the pipelined core.
+This limitation is mainly caused by the drawbacks of this simple pipeline implementation:
+**RAW data hazards** introduce stalls, while **control hazards** introduce flush penalties.
+
+This does not mean pipelining is a wrong optimization strategy — it is simply incomplete on
+its own.<br>
+The next iteration of this project will focus on mitigating data hazards, for example through
+forwarding/bypassing, while studying the associated implementation cost, benefits, and
+trade-offs.<br>
+The primary goal will be to reduce the number of stall cycles, increase CycleMark/MHz, and
+therefore improve the overall CycleMark/s of the pipelined core.
 
 <br>
 

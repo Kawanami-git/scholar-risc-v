@@ -1,0 +1,279 @@
+// SPDX-License-Identifier: MIT
+/*!
+********************************************************************************
+\file       csr.sv
+\brief      scholar risc-v core control/status registers file module
+\author     Kawanami
+\date       01/05/2026
+\version    1.3
+
+\details
+  This module implements the scholar risc-v
+  Control and Status Register (CSR) file.
+
+  It currently supports a cycle counter (mhpmcounter0, mapped to the standard mcycle CSR addresses), mhpmcounter3 (stall cycles) and mhpmcounter4 (softresetn events).
+
+  According to the RISC-V specification, `mhpmcounter0` can be accessed through:
+    - Address 0xB00 → lower 32 bits (LSB)
+    - Address 0xB80 → upper 32 bits (MSB)
+
+  `mhpmcounter3` can be accessed through:
+    - Address 0xB03 → lower 32 bits (LSB)
+    - Address 0xB83 → upper 32 bits (MSB)
+
+  `mhpmcounter4` can be accessed through:
+    - Address 0xB04 → lower 32 bits (LSB)
+    - Address 0xB84 → upper 32 bits (MSB)
+
+ These registers are read-only: writes to them are ignored,
+  and no write-enable logic is implemented.
+
+\remarks
+  - This implementation complies with [reference or standard].
+  - TODO: [possible improvements or future features]
+
+\section csr_version_history Version history
+| Version | Date       | Author     | Description                               |
+|:-------:|:----------:|:-----------|:------------------------------------------|
+| 1.0     | 19/12/2025 | Kawanami   | Initial version of the module.            |
+| 1.1     | 28/01/2026 | Kawanami   | Add RV32 hi-addresses, RV64-compatible CSR address aliases and return zero on unsupported CSR reads. |
+| 1.2     | 19/04/2026 | Kawanami   | Add simulation-driven signals for spike compatibility and replace architecture definition with a parameter. |
+| 1.3     | 01/05/2026 | Kawanami   | Refactor signals name and add a parameter to enable perf. counters. |
+********************************************************************************
+*/
+
+module csr
+
+  /*
+* Import useful packages.
+*/
+  import core_pkg::CSR_ADDR_WIDTH;
+/**/
+
+#(
+    /// Architecture to build (either 32-bit or 64-bit)
+    parameter int unsigned Archi              = 32,
+    /// Enable performance Counters
+    parameter bit          EnablePerfCounters = 1'b1
+) (
+`ifdef SIM
+    /// Simulation CSR overwrite enable
+    input wire                          en_i,
+    /// Simulation CSR overwrite data
+    input wire [Archi          - 1 : 0] data_i,
+`endif
+
+    /// System clock
+    input  wire                          clk_i,
+    /// System active low reset
+    input  wire                          rstn_i,
+    /* verilator lint_off UNUSEDSIGNAL */
+    /// CSR write address
+    input  wire [CSR_ADDR_WIDTH - 1 : 0] waddr_i,
+    /// CSR write enable
+    input  wire                          wen_i,
+    /// Data to write in the CSR
+    input  wire [     Archi     - 1 : 0] wdata_i,
+    /* verilator lint_on UNUSEDSIGNAL */
+    /// CSR read address
+    input  wire [CSR_ADDR_WIDTH - 1 : 0] raddr_i,
+    /// CSR read value
+    output wire [     Archi     - 1 : 0] rdata_o,
+    /// Data hazard stall (rs1 or rs1 dirty)
+    input  wire                          mhpmevent3,
+    /// Softreset event
+    input  wire                          mhpmevent4
+);
+
+  generate
+    if (EnablePerfCounters) begin : gen_with_perf_counters
+      /******************** DECLARATION ********************/
+      /* parameters verification */
+
+      /* local parameters */
+      /// mcycle upper 32-bit CSR address (RV32 only)
+      localparam logic [CSR_ADDR_WIDTH - 1 : 0] MHPMCOUNTER0_ADDR_HI = 'hb80;
+      /// mcycle lower CSR address
+      localparam logic [CSR_ADDR_WIDTH - 1 : 0] MHPMCOUNTER0_ADDR = 'hb00;
+      /// mhpmcounter3 upper 32-bit CSR address (RV32 only)
+      localparam logic [CSR_ADDR_WIDTH - 1 : 0] MHPMCOUNTER3_ADDR_HI = 'hb83;
+      /// mhpmcounter3 lower CSR address
+      localparam logic [CSR_ADDR_WIDTH - 1 : 0] MHPMCOUNTER3_ADDR = 'hb03;
+      /// mhpmcounter4 upper 32-bit CSR address (RV32 only)
+      localparam logic [CSR_ADDR_WIDTH - 1 : 0] MHPMCOUNTER4_ADDR_HI = 'hb84;
+      /// mhpmcounter4 lower CSR address
+      localparam logic [CSR_ADDR_WIDTH - 1 : 0] MHPMCOUNTER4_ADDR = 'hb04;
+
+      /* functions */
+
+      /* wires */
+      /// Read data
+      logic [Archi - 1 : 0] rdata;
+
+
+      /* registers */
+      /// mhpmcounter0 register (mcycle)
+      reg   [       63 : 0] mhpmcounter0_q;
+      /// mhpmcounter3 register (stall)
+      reg   [       63 : 0] mhpmcounter3_q;
+      /// mhpmcounter4 register (taken branches)
+      reg   [       63 : 0] mhpmcounter4_q;
+
+      /********************             ********************/
+
+
+
+      /// mhpmcounters write logic
+      /*!
+      * This block drives the mhpmcounter0, mhpmcounter3,
+      * and mhpmcounter4 registers.
+      *
+      * The mhpmcounter0 counts the number of clock cycles since reset.
+      * The mhpmcounter3 counts the number of stalled cycles.
+      * The mhpmcounter4 count the number of taken branches.
+      *
+      * All of these registers are read-only and cannot be
+      * overwritten using CSR instructions.
+      *
+      * These registers can be used for basic performance monitoring
+      * or instruction timing analysis.
+      */
+      always_ff @(posedge clk_i) begin : mhpmcounters_write
+        if (!rstn_i) begin
+          mhpmcounter0_q <= '0;
+          mhpmcounter3_q <= '0;
+          mhpmcounter4_q <= '0;
+        end
+        else begin
+          mhpmcounter0_q <= mhpmcounter0_q + 1;
+          if (mhpmevent3) mhpmcounter3_q <= mhpmcounter3_q + 1;
+          if (mhpmevent4) mhpmcounter4_q <= mhpmcounter4_q + 1;
+        end
+      end
+
+      /// CSR read logic
+      /*!
+      * This block drives rdata according to raddr_i.
+      * On RV32, the low and high halves are exposed through the standard CSR addresses.
+      * On RV64, both low and high addresses return the full 64-bit counter value for compatibility.
+      */
+      if (Archi == 64) begin : gen_csrs_read_64
+        always_comb begin : csrs_read
+          case (raddr_i)
+            MHPMCOUNTER0_ADDR_HI, MHPMCOUNTER0_ADDR: rdata = mhpmcounter0_q[Archi-1:0];
+            MHPMCOUNTER3_ADDR_HI, MHPMCOUNTER3_ADDR: rdata = mhpmcounter3_q[Archi-1:0];
+            MHPMCOUNTER4_ADDR_HI, MHPMCOUNTER4_ADDR: rdata = mhpmcounter4_q[Archi-1:0];
+            default:                                 rdata = '0;
+          endcase
+        end
+      end
+      else begin : gen_csrs_read_32
+        always_comb begin : csrs_read
+          case (raddr_i)
+            MHPMCOUNTER0_ADDR_HI: rdata = mhpmcounter0_q[63:32];
+            MHPMCOUNTER0_ADDR:    rdata = mhpmcounter0_q[31:0];
+            MHPMCOUNTER3_ADDR_HI: rdata = mhpmcounter3_q[63:32];
+            MHPMCOUNTER3_ADDR:    rdata = mhpmcounter3_q[31:0];
+            MHPMCOUNTER4_ADDR_HI: rdata = mhpmcounter4_q[63:32];
+            MHPMCOUNTER4_ADDR:    rdata = mhpmcounter4_q[31:0];
+            default:              rdata = '0;
+          endcase
+        end
+      end
+
+`ifdef SIM
+      /// Output driven by csrs_read
+      assign rdata_o = en_i ? data_i : rdata;
+`else
+      /// Output driven by csrs_read
+      assign rdata_o = rdata;
+`endif
+
+
+    end
+    else begin : gen_without_perf_counters
+
+      /******************** DECLARATION ********************/
+      /* parameters verification */
+
+      /* local parameters */
+      /// mcycle upper 32-bit CSR address (RV32 only)
+      localparam logic [CSR_ADDR_WIDTH - 1 : 0] MHPMCOUNTER0_ADDR_HI = 'hb80;
+      /// mcycle lower CSR address
+      localparam logic [CSR_ADDR_WIDTH - 1 : 0] MHPMCOUNTER0_ADDR = 'hb00;
+
+      /* functions */
+
+      /* wires */
+      /// Read data
+      logic [Archi - 1 : 0] rdata;
+
+
+      /* registers */
+      /// mhpmcounter0 register (mcycle)
+      reg   [       63 : 0] mhpmcounter0_q;
+      /********************             ********************/
+
+
+
+      /// mhpmcounters write logic
+      /*!
+      * This block drives the mhpmcounter0, mhpmcounter3,
+      * and mhpmcounter4 registers.
+      *
+      * The mhpmcounter0 counts the number of clock cycles since reset.
+      * The mhpmcounter3 counts the number of stalled cycles.
+      * The mhpmcounter4 count the number of taken branches.
+      *
+      * All of these registers are read-only and cannot be
+      * overwritten using CSR instructions.
+      *
+      * These registers can be used for basic performance monitoring
+      * or instruction timing analysis.
+      */
+      always_ff @(posedge clk_i) begin : mhpmcounters_write
+        if (!rstn_i) begin
+          mhpmcounter0_q <= '0;
+        end
+        else begin
+          mhpmcounter0_q <= mhpmcounter0_q + 1;
+        end
+      end
+
+      /// CSR read logic
+      /*!
+      * This block drives rdata according to raddr_i.
+      * On RV32, the low and high halves are exposed through the standard CSR addresses.
+      * On RV64, both low and high addresses return the full 64-bit counter value for compatibility.
+      */
+      if (Archi == 64) begin : gen_csrs_read_64
+        always_comb begin : csrs_read
+          case (raddr_i)
+            MHPMCOUNTER0_ADDR_HI, MHPMCOUNTER0_ADDR: rdata = mhpmcounter0_q[Archi-1:0];
+            default:                                 rdata = '0;
+          endcase
+        end
+      end
+      else begin : gen_csrs_read_32
+        always_comb begin : csrs_read
+          case (raddr_i)
+            MHPMCOUNTER0_ADDR_HI: rdata = mhpmcounter0_q[63:32];
+            MHPMCOUNTER0_ADDR:    rdata = mhpmcounter0_q[31:0];
+            default:              rdata = '0;
+          endcase
+        end
+      end
+
+`ifdef SIM
+      /// Output driven by csrs_read
+      assign rdata_o = en_i ? data_i : rdata;
+`else
+      /// Output driven by csrs_read
+      assign rdata_o = rdata;
+`endif
+
+    end
+
+  endgenerate
+
+endmodule
