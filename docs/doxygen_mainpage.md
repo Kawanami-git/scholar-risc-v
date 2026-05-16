@@ -1,7 +1,6 @@
-# SCHOLAR RISC-V Single-Cycle Code Documentation
+# scholar risc-v Single-Cycle Code Documentation
 
-This documentation describes the source code of the **SCHOLAR RISC-V
-single-cycle** core.
+This documentation describes the source code of the **scholar risc-v single-cycle** core.
 
 The goal of this page is to provide a code-oriented entry point: where the RTL
 files are located, which module to read first, and how the main hardware blocks
@@ -15,7 +14,7 @@ context, start from the repository `README.md`.
 ## Source Tree Overview {#source_tree_overview}
 
 ```text
-SCHOLAR_RISC-V/
+scholar-risc-v/
 ├── Makefile
 ├── README.md
 ├── docs/

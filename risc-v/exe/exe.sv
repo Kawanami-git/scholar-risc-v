@@ -2,14 +2,14 @@
 /*!
 ********************************************************************************
 \file       exe.sv
-\brief      SCHOLAR RISC-V core execution module
+\brief      scholar risc-v core execution module
 \author     Kawanami
 \date       29/03/2026
 \version    1.2
 
 \details
   This module implements the execution (exe) unit
-  of the SCHOLAR RISC-V processor core.
+  of the scholar risc-v processor core.
 
   Its main role is to perform the actual computation
   specified by each instruction, using the control signal

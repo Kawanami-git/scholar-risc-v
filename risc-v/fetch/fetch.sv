@@ -2,14 +2,14 @@
 /*!
 ********************************************************************************
 \file       fetch.sv
-\brief      SCHOLAR RISC-V core fetch module
+\brief      scholar risc-v core fetch module
 \author     Kawanami
 \date       29/03/2026
 \version    1.3
 
 \details
   This module implements the instruction fetch unit
-  of the SCHOLAR RISC-V core.
+  of the scholar risc-v core.
 
   It retrieves the instruction located at
   `pc_next_i` via the memory interface.

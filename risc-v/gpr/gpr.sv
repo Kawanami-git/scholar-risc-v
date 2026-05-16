@@ -2,13 +2,13 @@
 /*!
 ********************************************************************************
 \file       gpr.sv
-\brief      SCHOLAR RISC-V core General Purpose Registers file module
+\brief      scholar risc-v core General Purpose Registers file module
 \author     Kawanami
 \date       01/05/2026
 \version    1.3
 
 \details
-  This module implements the SCHOLAR RISC-V register file.
+  This module implements the scholar risc-v register file.
   It contains all general-purpose registers (GPRs)
   along with the program counter (pc_o).
   It consists of a RAM with two read ports

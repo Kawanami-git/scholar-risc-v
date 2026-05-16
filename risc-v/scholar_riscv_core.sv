@@ -2,14 +2,14 @@
 /*!
 ********************************************************************************
 \file       scholar_riscv_core.sv
-\brief      SCHOLAR RISC-V Core Module
+\brief      scholar risc-v Core Module
 \author     Kawanami
 \date       30/04/2026
 \version    1.6
 
 \details
-  This module is the top-level module of the SCHOLAR RISC-V core.
-  The SCHOLAR RISC-V core is an education-oriented 32-bit or 64-bit
+  This module is the top-level module of the scholar risc-v core.
+  The scholar risc-v core is an education-oriented 32-bit or 64-bit
   RISC-V implementation.
 
   ISA:

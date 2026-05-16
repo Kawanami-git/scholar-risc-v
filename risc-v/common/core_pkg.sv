@@ -1,7 +1,7 @@
 /*!
 ********************************************************************************
 \file       core_pkg.sv
-\brief      Core-wide parameters and control encodings for SCHOLAR RISC-V
+\brief      Core-wide parameters and control encodings for scholar risc-v
 \author     Kawanami
 \date       29/03/2026
 \version    1.0

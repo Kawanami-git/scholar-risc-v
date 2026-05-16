@@ -2,14 +2,14 @@
 /*!
 ********************************************************************************
 \file       decode.sv
-\brief      SCHOLAR RISC-V core decode module
+\brief      scholar risc-v core decode module
 \author     Kawanami
 \date       01/05/2026
 \version    1.4
 
 \details
   This module implements the decode unit
-  of the SCHOLAR RISC-V processor core.
+  of the scholar risc-v processor core.
 
   The primary role of the decode unit is to interpret
   the binary instruction fetched by the previous unit

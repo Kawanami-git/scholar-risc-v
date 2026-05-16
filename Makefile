@@ -2,13 +2,13 @@
 # /*!
 # ********************************************************************************
 # \file       Makefile
-# \brief      Top-level build & run orchestration for SCHOLAR RISC-V.
+# \brief      Top-level build & run orchestration for scholar risc-v.
 # \author     Kawanami
 # \version    2.3
 # \date       14/05/2026
 #
 # \details
-#   This Makefile is the main entry point for the SCHOLAR RISC-V single-cycle
+#   This Makefile is the main entry point for the scholar risc-v single-cycle
 #   branch. It keeps only the core sources and delegates the common build,
 #   firmware, simulation, and board-support flows to the riscv-core-harness
 #   submodule.
@@ -51,7 +51,7 @@
 
 #################################### Directories ####################################
 
-# Absolute path to the SCHOLAR RISC-V project root directory.
+# Absolute path to the scholar risc-v project root directory.
 ROOT_DIR 				:= $(abspath $(dir $(lastword $(MAKEFILE_LIST))))/
 
 # Path to the riscv-core-harness submodule used to provide shared flows.
@@ -115,11 +115,11 @@ include $(RISCV_CORE_HARNESS_MK)
 .PHONY: help
 help: riscv_help riscv_core_harness_help
 
-# Display help for SCHOLAR RISC-V local targets.
+# Display help for scholar risc-v local targets.
 .PHONY: riscv_help
 riscv_help:
 	@echo
-	@echo "SCHOLAR RISC-V — local project helper"
+	@echo "scholar risc-v — local project helper"
 	@echo "Usage: make <target>"
 	@echo
 	@printf "Targets:\n"

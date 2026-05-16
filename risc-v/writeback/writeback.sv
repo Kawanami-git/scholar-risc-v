@@ -2,14 +2,14 @@
 /*!
 ********************************************************************************
 \file       writeback.sv
-\brief      SCHOLAR RISC-V core write-back module
+\brief      scholar risc-v core write-back module
 \author     Kawanami
 \date       01/05/2026
 \version    1.5
 
 \details
  This module implements the write-back  unit
- of the SCHOLAR RISC-V processor core.
+ of the scholar risc-v processor core.
 
  The write-back unit is the final step in instruction execution.
  It is responsible for:

@@ -43,7 +43,6 @@ it is predictable (each instruction takes one cycle), easy to visualize, and str
 - [License](#license)
 - [Supported RISC-V instructions](#supported-risc-v-instructions)
 - [Instruction Formats](#instruction-formats)
-- [Supported features and results](#supported-features-and-results)
 - [Pedagogical value](#pedagogical-value)
 - [Overview](#overview)
 - [Fetch](#fetch)
@@ -360,68 +359,6 @@ Examples: **JAL**.
 <br>
 <br>
 
-## Supported features and results
-
-This first version of **scholar-risc-v** implements the **RV32I** (and optionally **RV64I**) base integer instruction set, along with the mcycle **CSR** from the **Zicntr** extension, used for performance benchmarking.
-
-The design provides a functional, minimal RISC-V processor suitable for education and early experimentation.<br>
-It forms the foundation upon which more advanced features — such as pipelining, forwarding, and branch prediction — will later be added.
-
-<br>
-
-Below is a summary of synthesis results on a PolarFire MPFS095T FPGA:
-
-| **Architecture**              | **Features**                                    | **CycleMark/MHz** | **FPGA Resources & Performance (PolarFire MPFS095T)**                          |
-| ----------------------------- | ----------------------------------------------- | ----------------- | ------------------------------------------------------------------------------ |
-| **RV32I + `mcycle` (Zicntr)** | Single-cycle RISC-V processor                   | 1.24              | LEs: 3143 (1093 FFs)<br>Fmax: 77 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
-| **RV64I + `mcycle` (Zicntr)** | Single-cycle RISC-V processor (64-bit datapath) | 1.05              | LEs: 6542 (2118 FFs)<br>Fmax: 67 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
-
-> 📝
-> Except for the **CycleMark/MHz**, these results are implementation-dependent.
-> Resource usage and Fmax are reported for the PolarFire MPFS095T FPGA with a
-> specific synthesis and place-and-route configuration.
->
-> These numbers are useful mainly as relative comparison points between
-> scholar-risc-v core versions implemented under the same conditions. For
-> example, comparing the single-cycle and pipelined cores on the same FPGA
-> architecture helps highlight the resource cost, timing impact, and performance
-> trade-offs introduced by each microarchitectural change.
->
-> They should not be interpreted as universal values or general performance
-> guarantees. Different FPGA families, speed grades, constraints, memory
-> implementations, and EDA tool versions may produce different results.
-
-<br>
-
----
-
-<br>
-<br>
-<br>
-<br>
-<br>
-
-### Pedagogical value
-
-This implementation intentionally prioritizes transparency over optimization.<br>
-Students can directly observe how every instruction interacts with hardware — from the **fetch** of an instruction to the **writeback** of its result — without the complexity of pipelines or caches.
-
-In future versions, the same base design will evolve step by step toward higher-performance architectures, showing how each optimization (such as pipelining or multi-issue) builds upon this simple foundation.
-
-The scholar-risc-v processor follows exactly this structure.<br>
-In its current form, it is a **single-cycle**, **single-issue** implementation — meaning that one instruction is fully executed per clock cycle.<br>
-Each step (**fetch**, **decode**, **execute**, and **writeback**) happens sequentially, but all within the same clock period.
-
-<br>
-
----
-
-<br>
-<br>
-<br>
-<br>
-<br>
-
 ## Overview
 
 In modern processor design, instruction execution is typically divided into four main steps:
@@ -442,11 +379,20 @@ This architecture is simple and ideal for understanding the complete flow of ins
 
 ### Instruction and memory assumptions (riscv-core-harness)
 
-To simplify analysis and maintain full visibility:
-  - The instruction and data memories are assumed to be ideal single-cycle memories — any access completes in one clock cycle.
-  - There is no cache or memory hierarchy in this version.
-  - Each instruction executes deterministically in one or two cycles (the latter for load/store operations).
-  - This simplification aligns well with microcontroller-like architectures, where simplicity and predictable execution is often more valuable than high throughput.
+<details>
+<summary></summary>
+
+To simplify the analysis and keep full visibility:
+- Instruction and data memories are assumed to behave like ideal **single-cycle** memories: every access completes in one clock cycle.
+- `gnt` is not used in this design. Only `rvalid` is meaningful.
+- There is no cache or memory hierarchy in this version.
+- This simplification matches microcontroller-like designs, where simplicity and predictable execution are often more valuable than peak throughput.
+
+> 📝 If non-ideal memories are used, the memory shall follow a simple timing rule:
+>   - the response/acceptance (`rvalid`) must be asserted in the **same cycle** as the request (`req`),
+>   - and the corresponding `rdata` is returned **one cycle after** `rvalid` is asserted.
+
+</details>
 
 <br>
 <br>
@@ -1213,8 +1159,18 @@ The performance of the **scholar-risc-v** processor is evaluated using three key
 
 ### CycleMark/MHz
 
-The CycleMark/MHz score represents the average number of benchmark iterations achieved per MHz of clock frequency. It is an image of the **IPC**.<br>
-The **RV32I** core achieves **1.24** CycleMark/MHz, while the **RV64I** version scores **1.05** CycleMark/MHz — slightly lower due to its wider datapath and additional logic depth.
+The **CycleMark/MHz** score represents the average number of benchmark iterations completed per million clock cycles. It can be used as a practical approximation of the core's overall execution efficiency, similar in spirit to an **IPC** indicator, although it is not a direct instruction-per-cycle measurement.<br>
+It is computed by dividing the number of iterations by the number of million-cycle periods required to execute the benchmark:
+
+`CycleMark/MHz = Iterations / (Total ticks / 1e6)`
+
+where `Total ticks` is the number of clock cycles required to execute the benchmark. See [CycleMark](https://github.com/Kawanami-git/scholar-risc-v/tree/main/benchmarking/CycleMark) for more details.
+
+![cyclemark](./img/cyclemark.png)
+> 📝 `mhpmcounterx` refers to the standard hardware performance counters defined by the RISC-V specification.<br>
+> In this micro-architecture version, no hardware performance counters are implemented beyond `mcycle`; therefore, `mhpmcounter3` to `mhpmcounter13` always read as `0`.
+
+The **RV32I** core achieves **1 / (802686 / 1000000) = 1.24 CycleMark/MHz**, while the **RV64I** version scores **1.05** CycleMark/MHz — slightly lower due to its wider datapath and additional logic depth.
 
 Comparison data (CoreMark scores, which CycleMark is derived from) can be found here: [ARM Cortex-M Comparison Table](https://developer.arm.com/-/media/Arm%20Developer%20Community/PDF/Cortex-A%20R%20M%20datasheets/Arm%20Cortex-M%20Comparison%20Table_v3.pdf).
 

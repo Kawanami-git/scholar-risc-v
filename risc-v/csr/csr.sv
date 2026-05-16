@@ -2,13 +2,13 @@
 /*!
 ********************************************************************************
 \file       csr.sv
-\brief      SCHOLAR RISC-V core control/status registers file module
+\brief      scholar risc-v core control/status registers file module
 \author     Kawanami
 \date       01/05/2026
 \version    1.5
 
 \details
-  This module implements the SCHOLAR RISC-V
+  This module implements the scholar risc-v
   Control and Status Register (CSR) file.
 
   It currently supports only the `mcycle` register,
