@@ -90,7 +90,7 @@ Together, they define the minimum working instruction set that allows a program 
 >
 > You can think of R-type instructions as operations between two registers, I-type instructions as operations involving immediates, and S/B/U/J-types as handling memory access or control flow.
 
-> 🧠 Note:
+> 📝
 >
 > Arithmetic instructions in **RV32I** always operate on 32-bit values.<br>
 > When working in **RV64I**, the same logic applies — but operands and results are sign-extended to 64 bits.<br>
@@ -272,7 +272,7 @@ Depending on the instruction type, some fields may be reused or interpreted diff
 
 <br>
 
-> 🧠 Note:
+> 📝
 >
 > RISC-V uses fixed 32-bit instruction length (for the base ISA), which simplifies decoding logic — every instruction is exactly one word.
 
@@ -360,33 +360,6 @@ Examples: **JAL**.
 <br>
 <br>
 
-## Supported features and results
-
-This version of **scholar risc-v** implements the **RV32I** (and optionally **RV64I**) base integer instruction set, along with the `mcycle`, `mhpmcounter3` and `mhpmcounter4` **CSR** from the **Zicntr** extension, used for performance benchmarking.
-
-<br>
-
-Below is a summary of synthesis results on a PolarFire MPFS095T FPGA:
-
-| **Architecture**              | **Features**                                    | **CycleMark/MHz** | **FPGA Resources & Performance (PolarFire MPFS095T)**                          |
-| ----------------------------- | ----------------------------------------------- | ----------------- | ------------------------------------------------------------------------------ |
-| **RV32I + `CSR*` (Zicntr)** | single-issue pipelined RISC-V processor | 0.55             | LEs: 3239 (1655 FFs)<br>Fmax: 181 MHz<br>uSRAM: 6<br>LSRAM: 0<br>Math blocks: 0 |
-| **RV64I + `CSR*` (Zicntr)** | single-issue pipelined RISC-V processor (64-bit datapath) | 0.45              | LEs: 6685 (3158 FFs)<br>Fmax: 153 MHz<br>uSRAM: 12<br>LSRAM: 0<br>Math blocks: 0 |
-
-> 📝
->
-> `CSR*`: `mcycle`, `mhpmcounter3` and `mhpmcounter4`.
-
-<br>
-
----
-
-<br>
-<br>
-<br>
-<br>
-<br>
-
 ## Pedagogical value
 
 This implementation intentionally prioritizes transparency over optimization.<br>
@@ -436,7 +409,7 @@ This choice highlights the main pros and cons of a **pipelined** architecture wh
 <br>
 <br>
 
-### Instruction and data memories assumptions
+### Instruction and data memories assumptions (riscv-core-harness)
 
 <details>
 <summary></summary>
@@ -1083,7 +1056,7 @@ The low bits `exe_out`[ADDR_OFFSET_WIDTH-1:0] are used as a byte offset inside t
   - shift store data into the correct byte lane.
   - generate the byte-level write mask (`be`).
 
-Note: this implementation assumes naturally aligned accesses as expected by most RV32I/RV64I software. Misaligned exception/trap behavior is not implemented here.
+📝 this implementation assumes naturally aligned accesses as expected by most RV32I/RV64I software. Misaligned exception/trap behavior is not implemented here.
 
 The memory direction is encoded in `mem_ctrl`:
   - `mem_ctrl` == `MEM_IDLE` → no memory access.
@@ -1608,9 +1581,24 @@ As for the **single-cycle** version, the performance of the **scholar risc-v** p
 | **RV32I + `CSR*` (Zicntr)**      | 0.55              | LEs: 3239 (1655 FFs)<br>Fmax: 181 MHz<br>uSRAM: 6<br>LSRAM: 0<br>Math blocks: 0 |
 | **RV64I + `CSR*` (Zicntr)**    | 0.45              | LEs: 6685 (3158 FFs)<br>Fmax: 153 MHz<br>uSRAM: 12<br>LSRAM: 0<br>Math blocks: 0 |
 
-> 📝 `CSR*`: only `mcycle` is enabled in the synthesized implementation.
+> 📝
+> `CSR*`: only `mcycle` is enabled in the synthesized implementation.
 > Additional performance counters such as `mhpmcounter3` and `mhpmcounter4`
 > are disabled to reduce timing and resource overhead.
+>
+> Except for the **CycleMark/MHz**, these results are implementation-dependent.
+> Resource usage and Fmax are reported for the PolarFire MPFS095T FPGA with a
+> specific synthesis and place-and-route configuration.
+>
+> These numbers are useful mainly as relative comparison points between
+> scholar-risc-v core versions implemented under the same conditions. For
+> example, comparing the single-cycle and pipelined cores on the same FPGA
+> architecture helps highlight the resource cost, timing impact, and performance
+> trade-offs introduced by each microarchitectural change.
+>
+> They should not be interpreted as universal values or general performance
+> guarantees. Different FPGA families, speed grades, constraints, memory
+> implementations, and EDA tool versions may produce different results.
 
 <br>
 <br>
@@ -1622,6 +1610,9 @@ The **RV32I** pipelined core achieves a significantly lower CycleMark/MHz score 
 frequency, it performs less useful work per cycle.
 
 ![cyclemark](./img/cyclemark.png)
+> 📝 `mhpmcounterx` refers to the standard hardware performance counters defined by the RISC-V specification.<br>
+> In this micro-architecture version, `mhpmcounter3` is used to measure the number of cycles lost due to **data hazard** and `mhpmcounter3` the number of cycles lost due to **control hazard**.<br>
+> `mhpmcounter5` to `mhpmcounter13` are not implemented and always read as `0`.
 
 This is the trade-off of increasing the maximum operating frequency.<br>
 As shown in the plot, among the **1,829,338** cycles required to execute one CycleMark iteration:

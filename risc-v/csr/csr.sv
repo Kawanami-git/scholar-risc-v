@@ -4,8 +4,8 @@
 \file       csr.sv
 \brief      scholar risc-v core control/status registers file module
 \author     Kawanami
-\date       01/05/2026
-\version    1.3
+\date       16/05/2026
+\version    1.4
 
 \details
   This module implements the scholar risc-v
@@ -39,6 +39,7 @@
 | 1.1     | 28/01/2026 | Kawanami   | Add RV32 hi-addresses, RV64-compatible CSR address aliases and return zero on unsupported CSR reads. |
 | 1.2     | 19/04/2026 | Kawanami   | Add simulation-driven signals for spike compatibility and replace architecture definition with a parameter. |
 | 1.3     | 01/05/2026 | Kawanami   | Refactor signals name and add a parameter to enable perf. counters. |
+| 1.4     | 16/05/2026 | Kawanami   | Compute the number of cycles lost due to control hazard instead of capturing control hazard event. |
 ********************************************************************************
 */
 
@@ -147,7 +148,7 @@ module csr
         else begin
           mhpmcounter0_q <= mhpmcounter0_q + 1;
           if (mhpmevent3) mhpmcounter3_q <= mhpmcounter3_q + 1;
-          if (mhpmevent4) mhpmcounter4_q <= mhpmcounter4_q + 1;
+          if (mhpmevent4) mhpmcounter4_q <= mhpmcounter4_q + 3;
         end
       end
 
