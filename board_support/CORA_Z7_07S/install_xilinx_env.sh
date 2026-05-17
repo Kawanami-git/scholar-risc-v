@@ -9,7 +9,7 @@
 # \date       14/04/2026
 #
 # \details
-#   Installs the Linux host dependencies required by the SCHOLAR RISC-V board
+#   Installs the Linux host dependencies required by the scholar risc-v board
 #   support environment, then downloads and runs the AMD 2025.2 batch installer
 #   for Vivado and Vitis.
 #

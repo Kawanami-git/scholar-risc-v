@@ -1,6 +1,6 @@
 # Microchip MPFS DISCOVERY KIT
 
-This document provides instructions on how to install the tools required to set up the **MPFS DISCOVERY KIT** development board from **Microchip** for use with the **SCHOLAR_RISC-V** core. This file only covers tool installation steps. <br> 
+This document provides instructions on how to install the tools required to set up the **MPFS DISCOVERY KIT** development board from **Microchip** for use with the **scholar-risc-v** core. This file only covers tool installation steps. <br> 
 To run tests and evaluate the performance of the RISC-V core, please refer to the **README.md** file in the **MPFS_DISCOVERY_KIT** repository of each branches.
 
 > ⚠️ The following instructions are written for **Ubuntu 20.04 LTS** and **Ubuntu 24.04 LTS**. If you are using another Linux distribution or version, you can still follow the general steps, but you may need to make slight adjustments to install the required dependencies or tools.
@@ -40,7 +40,7 @@ To run tests and evaluate the performance of the RISC-V core, please refer to th
 
 ## **Required Hardware**
 
-The following hardware is required to be able to use the **SCHOLAR RISC-V** with the **MPFS DISCOVERY KIT**:
+The following hardware is required to be able to use the **scholar risc-v** with the **MPFS DISCOVERY KIT**:
 - The [MPFS DISCOVERY KIT](https://www.microchip.com/en-us/development-tool/mpfs-disco-kit)
 - An Ethernet cable (optional)
 - A class A1 or A2 microSD card (preferably SanDisk) with at least 16GB capacity

@@ -1,6 +1,6 @@
 # Simulation Environment
 
-This document explains how to set up and use the simulation environment for **SCHOLAR_RISC-V**.
+This document explains how to set up and use the simulation environment for **scholar-risc-v**.
 
 > 📝 The following instructions were written for **Ubuntu 24.04 LTS**. If you are using another Linux distribution or version, you can still follow the general steps, but you may need to make slight adjustments to install the required dependencies or tools.
 
@@ -47,7 +47,7 @@ make install_sim_env
 ```
 
 > 📝 The tools are installed in **/opt**. Therefore, root privileges are required.  
-> Multiple versions of the **RISC-V GNU Toolchain** may be installed to support the different **SCHOLAR RISC-V** microarchitectures.
+> Multiple versions of the **RISC-V GNU Toolchain** may be installed to support the different **scholar risc-v** microarchitectures.
 
 > ⚠️ Verilator preprocessing behavior may vary across versions. To ensure compatibility with the HDL, it is recommended to install Verilator through the provided installation script.  
 > Spike log formatting may also vary across versions. To ensure compatibility with the simulation environment, it is recommended to install Spike through the provided installation script.

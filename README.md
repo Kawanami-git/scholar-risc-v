@@ -1,4 +1,4 @@
-# SCHOLAR_RISC-V
+# scholar-risc-v
 
 *A pedagogical journey into CPU architecture through RISC‑V.*
 
@@ -97,7 +97,7 @@ Some files, generated artifacts, or external components used during the build pr
 
 ## Overview
 
-**SCHOLAR_RISC‑V** is a learning‑oriented project that walks through the building blocks of a processor using the **RISC‑V architecture** as a foundation. It serves both as a reference and a hands‑on exploration of design, architecture, and optimization.
+**scholar-risc‑v** is a learning‑oriented project that walks through the building blocks of a processor using the **RISC‑V architecture** as a foundation. It serves both as a reference and a hands‑on exploration of design, architecture, and optimization.
 
 The repository is organized into multiple branches, each focused on a specific evolution that improves the processor. Every branch includes detailed explanations of *what* was done, *why* it was done, and *what’s next*. Branches are connected in sequence so you can follow the core’s progression.<br>
 However, each branch is versioned independently. As a result, files that exist in multiple branches may differ from one branch to another.
@@ -268,8 +268,8 @@ make install_xilinx_env
 
 Clone the repository and enter the project directory:
 ```bash
-git clone https://github.com/Kawanami-git/SCHOLAR_RISC-V.git
-cd SCHOLAR_RISC-V/
+git clone https://github.com/Kawanami-git/scholar-risc-v.git
+cd scholar-risc-v/
 ```
 
 Install the simulation environment:

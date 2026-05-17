@@ -1,6 +1,6 @@
 # Digilent Cora Z7-07S
 
-This document provides instructions on how to install the tools required to set up the **Cora Z7-07S** development board from **Digilent** for use with the **SCHOLAR_RISC-V** core. This file only covers tool installation steps. <br> 
+This document provides instructions on how to install the tools required to set up the **Cora Z7-07S** development board from **Digilent** for use with the **scholar-risc-v** core. This file only covers tool installation steps. <br> 
 To run tests and evaluate the performance of the RISC-V core, please refer to the **README.md** file in the **CORA_Z7_07S** repository of each branches.
 
 > ⚠️ The following instructions were written for **Ubuntu 24.04 LTS**. If you are using another Linux distribution or version, you can still follow the general steps, but you may need to make slight adjustments to install the required dependencies or tools.
@@ -39,7 +39,7 @@ To run tests and evaluate the performance of the RISC-V core, please refer to th
 
 ## Required Hardware
 
-The following hardware is required to use **SCHOLAR_RISC-V** with the **Cora Z7-07S**:
+The following hardware is required to use **scholar-risc-v** with the **Cora Z7-07S**:
 
 - The [Cora Z7-07S](https://digilent.com/reference/programmable-logic/cora-z7/start)
 - An Ethernet cable (optional)
