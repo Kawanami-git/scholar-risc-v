@@ -133,17 +133,35 @@ The repository follows a microarchitecture‑based branching model:
 
 ### Branch Summary
 
-> Only RV32 details are shown here for brevity. See each branch's README for full details (including RV64).
+> Only RV32 details are shown here for brevity. See each branch's README for full details, including RV64 results.
 
-| **Branch**       | **Features** | **CycleMark/MHz** | **FPGA (PolarFire MPFS095T)** |
-|------------------|--------------|-------------------|-------------------------------|
-| `Single-Cycle`   | Single‑cycle, single‑issue core; **RV32I/RV64I + `mcycle` (Zicntr)** | 1.24 | LEs: 3150 (1063 FFs)<br>Fmax: 75 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
-| `pipeline`   | pipelined single‑issue core; **RV32I/RV64I + `CSR*` (Zicntr)** | 0.55 | LEs: 2023 (782 FFs)<br>Fmax: 192 MHz<br>uSRAM: 6<br>LSRAM: 0<br>Math blocks: 0 |
-| `bypass`   | pipelined single‑issue core with forwarding; **RV32I/RV64I + `CSR*` (Zicntr)** | 0.82 | LEs: 2188 (659 FFs)<br>Fmax: 167 MHz<br>uSRAM: 6<br>LSRAM: 0<br>Math blocks: 0 |
+| **Branch**     | **Features** | **CycleMark/MHz** | **Fmax** | **CycleMark/s** | **FPGA Resources (PolarFire MPFS095T)** |
+|----------------|--------------|------------------:|---------:|----------------:|------------------------------------------|
+| `Single-Cycle` | Single-cycle, single-issue core; **RV32I + `mcycle` (Zicntr)** | 1.24 | 77 MHz  | 95.5  | LEs: 3143 (1093 FFs)<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
+| `pipeline`     | Pipelined single-issue core; **RV32I + `CSR*` (Zicntr)** | 0.55 | 181 MHz | 99.6  | LEs: 3239 (1655 FFs)<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
+| `bypass`       | Pipelined single-issue core with forwarding; **RV32I + `CSR*` (Zicntr)** | 0.82 | 178 MHz | 146.0 | LEs: 3651 (1653 FFs)<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
 
 > 📝
 >
-> `CSR*`: `mcycle`.
+> `CycleMark/s` is estimated as `CycleMark/MHz × Fmax`.
+>
+> `CSR*`: only `mcycle` is enabled in the synthesized implementation.
+> Additional performance counters such as `mhpmcounter3-13` may be used for profiling,
+> but can be disabled in synthesis to reduce timing and resource overhead.
+>
+> Except for **CycleMark/MHz**, these results are implementation-dependent.
+> Resource usage and Fmax are reported for the PolarFire MPFS095T FPGA with a
+> specific synthesis and place-and-route configuration.
+>
+> These numbers are useful mainly as relative comparison points between
+> scholar-risc-v core versions implemented under the same conditions. For example,
+> comparing the single-cycle, pipelined, and bypassed cores on the same FPGA
+> architecture helps highlight the resource cost, timing impact, and performance
+> trade-offs introduced by each microarchitectural change.
+>
+> They should not be interpreted as universal values or general performance
+> guarantees. Different FPGA families, speed grades, constraints, memory
+> implementations, and EDA tool versions may produce different results.
 
 <br>
 <br>
