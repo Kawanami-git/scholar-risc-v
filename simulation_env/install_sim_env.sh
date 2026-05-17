@@ -5,8 +5,8 @@
 # \file       install_sim_env.sh
 # \brief      One-shot setup for the simulation toolchain (Verilator, GCC, Spike).
 # \author     Kawanami
-# \version    1.2
-# \date       11/12/2025
+# \version    1.3
+# \date       17/05/2026
 #
 # \details
 #   Installs system dependencies and builds from source the following tools:
@@ -27,6 +27,7 @@
 # | 1.0     | 11/11/2025 | Kawanami   | Initial version. |
 # | 1.1     | 16/11/2025 | Kawanami   | Add 'graphviz' package for doxygen. |
 # | 1.2     | 11/12/2025 | Kawanami   | Add 'clang-format' package for C/C++ format. |
+# | 1.3     | 17/05/2026 | Kawanami   | Update GCC install. |
 # ********************************************************************************
 # */
 
@@ -119,17 +120,36 @@ make -j"$(nproc)" && make install && \
 cd .. && rm -rf verilator
 
 # ================================================================================
-# Build RISC-V GNU Toolchain (two prefixes: rv32i_zicntr, rv64i_zicntr)
+# Build RISC-V GNU Toolchain (single multilib bare-metal toolchain)
 #   - Pinned to tag 2025.01.20 (adjust if needed)
-#   - Newlib bare-metal toolchains with minimal ISA profiles used by SCHOLAR RISC-V
+#   - Newlib bare-metal toolchain
+#   - One compiler can target several ISA/ABI combinations through -march/-mabi
 # ================================================================================
+
+MULTILIB_GENERATOR="\
+rv32i-ilp32-rv32i_zicntr-zicntr;\
+rv64i-lp64-rv64i_zicntr-zicntr;\
+rv32im-ilp32--;\
+rv64im-lp64--;\
+rv32ima-ilp32--;\
+rv64ima-lp64--;\
+rv32imac-ilp32--;\
+rv64imac-lp64--;\
+rv32imaf-ilp32--;\
+rv64imaf-lp64--;\
+rv32imaf-ilp32f--;\
+rv64imaf-lp64f--;\
+rv32imafdc-ilp32--;\
+rv64imafdc-lp64--;\
+rv32imafdc-ilp32d--;\
+rv64imafdc-lp64d--"
+
 git clone https://github.com/riscv-collab/riscv-gnu-toolchain.git && \
 cd riscv-gnu-toolchain && \
 git checkout 2025.01.20 && \
-./configure --prefix=/opt/riscv-gnu-toolchain/rv32i_zicntr/ --with-arch=rv32i_zicntr --with-abi=ilp32 && \
-make -j"$(nproc)" && \
-make clean && \
-./configure --prefix=/opt/riscv-gnu-toolchain/rv64i_zicntr/ --with-arch=rv64i_zicntr --with-abi=lp64 && \
+./configure \
+  --prefix=/opt/riscv-gnu-toolchain/multilib/ \
+  --with-multilib-generator="${MULTILIB_GENERATOR}"
 make -j"$(nproc)" && \
 cd .. && rm -rf riscv-gnu-toolchain
 
