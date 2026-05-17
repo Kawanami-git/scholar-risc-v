@@ -40,6 +40,7 @@
 # | 1.2     | 14/01/2026 | Kawanami   | Update 'help' target to include `loader_spike` and `cyclemark_spike`.   |
 # | 1.3     | 03/02/2026 | Kawanami   | Add non-perfect memory support.   		|
 # | 2.0     | 01/05/2026 | Kawanami   | Delegate shared flows to core harness. 	|
+# | 2.1     | 17/05/2026 | Kawanami   | Comment ENABLE_PERF_COUNTERS parameter.	|
 # ********************************************************************************
 # */
 
@@ -79,7 +80,7 @@ PNR_PASSES 				?= 1
 # GCC-compatible RISC-V ISA string used by firmware and simulation flows.
 ISA 					?= rv32i_zicntr
 
-#
+# Enable optional CSR hardware performance counters (mhpmcounter3+).
 ENABLE_PERF_COUNTERS	?= 1
 
 ####################################                      ####################################

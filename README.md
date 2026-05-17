@@ -66,7 +66,7 @@ A **pipelined** microarchitecture means that each instruction is completed over 
 
 This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
 
-However, part of this repository (CycleMark) is derived from the [CoreMark repository](https://github.com/eembc/coremark), which is distributed under its own license. You can find the original license and related notices in the [CycleMark](software/firmware/cyclemark/) directory.<br>
+However, sub-modules of this repository are distributed under their own licenses.
 
 <br>
 
@@ -1610,9 +1610,7 @@ The **RV32I** pipelined core achieves a significantly lower CycleMark/MHz score 
 frequency, it performs less useful work per cycle.
 
 ![cyclemark](./img/cyclemark.png)
-> 📝 `mhpmcounterx` refers to the standard hardware performance counters defined by the RISC-V specification.<br>
-> In this micro-architecture version, `mhpmcounter3` is used to measure the number of cycles lost due to **data hazard** and `mhpmcounter3` the number of cycles lost due to **control hazard**.<br>
-> `mhpmcounter5` to `mhpmcounter13` are not implemented and always read as `0`.
+
 
 This is the trade-off of increasing the maximum operating frequency.<br>
 As shown in the plot, among the **1,829,338** cycles required to execute one CycleMark iteration:
@@ -1686,8 +1684,10 @@ The **pipelined** version of the **scholar risc-v** processor focuses on improvi
 frequency.
 
 This goal is achieved: the pipelined core reaches a significantly higher maximum frequency
-than the **single-cycle** version. However, the overall performance improvement remains
-limited because the core performs less useful work per cycle.
+than the **single-cycle** version. However, the overall performance (**CycleMark/s**) improvement remains limited because the core performs less useful work per cycle.
+
+For the PolarFire MPFS095T implementation, the **RV32I** pipelined core reaches
+approximately **99.6 CycleMark/s** (`0.55 CycleMark/MHz × 181 MHz`).
 
 Detailed comparison values across **scholar risc-v** microarchitectures are summarized in the
 [main branch README](https://github.com/Kawanami-git/scholar-risc-v/tree/main#project-organization).
