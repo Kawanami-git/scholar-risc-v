@@ -1,15 +1,15 @@
-# SCHOLAR RISC-V Processor – Pipeline Microarchitecture with Bypassing
+# scholar risc-v Processor – Pipeline Microarchitecture with Bypassing
 
-This document introduces the **SCHOLAR RISC-V** processor in its **pipelined** version with **bypassing**.<br>
-Designed as an educational project, **SCHOLAR RISC-V** illustrates the internal workings of a RISC-V processor while serving as a scalable learning platform for students in computer architecture and digital systems.
+This document introduces the **scholar risc-v** processor in its **pipelined** version with **bypassing**.<br>
+Designed as an educational project, **scholar risc-v** illustrates the internal workings of a RISC-V processor while serving as a scalable learning platform for students in computer architecture and digital systems.
 
 This document provides an overview of the **bypassing** mechanism, lists the supported instructions, explains how the processor operates at this stage of development, and discusses both its performance and limitations. Finally, it outlines the next planned steps for the project’s evolution.
 
-The **pipelined** **SCHOLAR RISC-V** with **bypassing** represents the second enhancement of the microarchitecture.<br>
+The **pipelined** **scholar risc-v** with **bypassing** represents the second enhancement of the microarchitecture.<br>
 If you have not read the previous version describing the baseline **pipelined** core, please refer to the [pipeline](https://github.com/Kawanami-git/SCHOLAR_RISC-V/tree/pipeline) branch.
 
 This version remains **single-issue** (only one instruction is issued per cycle).<br>
-At this stage, the processor supports the **RV32I** and **RV64I** base instruction sets, along with mcycle (Zicntr) and several HPM-like performance counters (mhpmcounter3…mhpmcounter13) enabled in simulation only (Verilator) for CycleMark profiling: 
+At this stage, the processor supports the **RV32I** and **RV64I** base instruction sets, along with mcycle (Zicntr) and several HPM-like performance counters (mhpmcounter3…mhpmcounter13) for CycleMark profiling: 
 - `mhpmcounter3` (stall cycles). 
 - `mhpmcounter4` (taken branches).
 - `mhpmcounter5` (Exe -> Decode bypass (op1 or op2)).
@@ -28,7 +28,7 @@ These **CSRs** are used for CycleMark benchmarking.
 
 > 📝 Note
 >
-> Internal microarchitecture of the SCHOLAR RISC-V **pipelined** processor with bypasses.<br>
+> Internal microarchitecture of the **scholar risc-v pipelined** processor with bypasses.<br>
 > The arrows represent the flow of instructions through the **Fetch**–**Decode**–**Exe**–**Mem**–**Writeback** stages.<br>
 > For readability, clock and reset signals are omitted.<br>
 > A `^` symbol at the bottom of a block indicates a sequential (clocked) element.<br>
@@ -50,7 +50,6 @@ These **CSRs** are used for CycleMark benchmarking.
 - [License](#license)
 - [Supported RISC-V instructions](#supported-risc-v-instructions)
 - [Instruction Formats](#instruction-formats)
-- [Supported features and results](#supported-features-and-results)
 - [Pedagogical value](#pedagogical-value)
 - [Overview](#overview)
 - [Fetch](#fetch)
@@ -77,8 +76,6 @@ These **CSRs** are used for CycleMark benchmarking.
 
 This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
 
-However, part of this repository (CycleMark) is derived from the [CoreMark repository](https://github.com/eembc/coremark), which is distributed under its own license. You can find the original license and related notices in the [CycleMark](software/firmware/cyclemark/) directory.<br>
-
 <br>
 
 ---
@@ -91,7 +88,7 @@ However, part of this repository (CycleMark) is derived from the [CoreMark repos
 
 ## Supported RISC-V Instructions 
 
-This section lists all base integer instructions implemented in the **SCHOLAR RISC-V** processor, including both **RV32I** and **RV64I** sets.<br>
+This section lists all base integer instructions implemented in the **scholar risc-v** processor, including both **RV32I** and **RV64I** sets.<br>
 Each instruction is presented with its mnemonic, format, description, and pseudocode operation.
 
 These instructions form the foundation of the processor’s execution capabilities — covering arithmetic, logic, control flow, and memory operations.<br>
@@ -373,31 +370,6 @@ Examples: **JAL**.
 <br>
 <br>
 
-## Supported features and results
-
-This version of **SCHOLAR RISC-V** implements the **RV32I** (and optionally **RV64I**) base integer instruction set, along with the `mcycle`, `mhpmcounter3` and `mhpmcounter4` **CSR** from the **Zicntr** extension, used for performance benchmarking.
-
-<br>
-
-Below is a summary of synthesis results on a PolarFire MPFS095T FPGA:
-
-| **Architecture**              | **Features**                                    | **CycleMark/MHz** | **FPGA Resources & Performance (PolarFire MPFS095T)**                          |
-| ----------------------------- | ----------------------------------------------- | ----------------- | ------------------------------------------------------------------------------ |
-| **RV32I + `CSR*` (Zicntr)** | single-issue pipelined (+ bypass) RISC-V processor | 0.82             | LEs: 2188 (659 FFs)<br>Fmax: 167 MHz<br>uSRAM: 6<br>LSRAM: 0<br>Math blocks: 0 |
-| **RV64I + `CSR*` (Zicntr)** | single-issue pipelined with (+ bypass) RISC-V processor (64-bit datapath) | 0.70              | LEs: 4637 (1108 FFs)<br>Fmax: 140 MHz<br>uSRAM: 12<br>LSRAM: 0<br>Math blocks: 0 |
-
-> 📝 `CSR*`: `mcycle`.
-
-<br>
-
----
-
-<br>
-<br>
-<br>
-<br>
-<br>
-
 ## Pedagogical value
 
 The **pipelined** optimization of the core delivered mixed results.<br>
@@ -431,7 +403,10 @@ Other data hazard classes exist in general (WAR, WAW), but they do not occur in 
 <br>
 <br>
 
-### Instruction and data memory assumptions
+### Instruction and data memories assumptions (riscv-core-harness)
+
+<details>
+<summary></summary>
 
 To simplify the analysis and keep full visibility:
 - Instruction and data memories are assumed to behave like ideal **single-cycle** memories: every access completes in one clock cycle.
@@ -443,8 +418,7 @@ To simplify the analysis and keep full visibility:
 >   - the response/acceptance (`rvalid`) must be asserted in the **same cycle** as the request (`req`),
 >   - and the corresponding `rdata` is returned **one cycle after** `rvalid` is asserted.
 
-<br>
-<br>
+</details>
 
 ### The data hazards
 
@@ -787,8 +761,8 @@ Even though these paths do not account for most bypass activations (respectively
 
 With both late paths removed:
 - **CycleMark/MHz** becomes **0.82**
-- **Fmax** increases to **167 MHz**
-- Throughput becomes: **0.82 × 167 = 137 CycleMark/s**
+- **Fmax** increases to **178 MHz**
+- Throughput becomes: **0.82 × 178 = 146 CycleMark/s**
 
 Because **Writeback -> Exe** (`wb_wdata`, `op3`) is used only twice in CycleMark, it could also be removed. In practice, it provides no significant frequency gain (it is not on the critical path), and another workload could rely on it more heavily. Since its area cost is small, it is kept.
 
@@ -1192,7 +1166,7 @@ This illustrates the general bypass flow used throughout the design: detect the 
 
 ![SCHOLAR_RISC-V_resources](./img/SCHOLAR_RISC-V_32bit_resources.png)
 
-As for the **single-cycle** and the **pipelined** versions, the performance of the **SCHOLAR RISC-V** processor is evaluated using three key indicators:
+As for the **single-cycle** and the **pipelined** versions, the performance of the **scholar risc-v** processor is evaluated using three key indicators:
   - **CycleMark/MHz** — a normalized performance score derived from CoreMark.
   - **Maximum frequency (Fmax)** — the highest achievable clock rate on the FPGA.
   - **Parallelism** — the number of hardware threads that can be executed simultaneously.
@@ -1201,43 +1175,82 @@ As for the **single-cycle** and the **pipelined** versions, the performance of t
 
 | **Architecture**                  | **CycleMark/MHz** | **FPGA Resources & Performance (PolarFire MPFS095T)**                          |
 |----------------------------------|------------------:|--------------------------------------------------------------------------------|
-| **RV32I + `CSR*` (Zicntr)**      | 0.82              | LEs: 2188 (659 FFs)<br>Fmax: 167 MHz<br>uSRAM: 6<br>LSRAM: 0<br>Math blocks: 0 |
-| **RV64I + `mcycle` (Zicntr)**    | 0.70              | LEs: 4637 (1108 FFs)<br>Fmax: 140 MHz<br>uSRAM: 12<br>LSRAM: 0<br>Math blocks: 0 |
+| **RV32I + `CSR*` (Zicntr)**      | 0.82              | LEs: 3651 (1653 FFs)<br>Fmax: 178 MHz<br>uSRAM: 6<br>LSRAM: 0<br>Math blocks: 0 |
+| **RV64I + `mcycle` (Zicntr)**    | 0.70              | LEs: 7517 (3148 FFs)<br>Fmax: 142 MHz<br>uSRAM: 12<br>LSRAM: 0<br>Math blocks: 0 |
 
-> 📝 `CSR*`: `mcycle`.
+> 📝
+> `CSR*`: only `mcycle` is enabled in the synthesized implementation.
+> Additional performance counters `mhpmcounter3-13`
+> are disabled to reduce timing and resource overhead.
+>
+> Except for the **CycleMark/MHz**, these results are implementation-dependent.
+> Resource usage and Fmax are reported for the PolarFire MPFS095T FPGA with a
+> specific synthesis and place-and-route configuration.
+>
+> These numbers are useful mainly as relative comparison points between
+> scholar-risc-v core versions implemented under the same conditions. For
+> example, comparing the single-cycle and pipelined cores on the same FPGA
+> architecture helps highlight the resource cost, timing impact, and performance
+> trade-offs introduced by each microarchitectural change.
+>
+> They should not be interpreted as universal values or general performance
+> guarantees. Different FPGA families, speed grades, constraints, memory
+> implementations, and EDA tool versions may produce different results.
 
 <br>
 <br>
 
 ### CycleMark/MHz
 
-The CycleMark/MHz score represents the average number of benchmark iterations achieved per MHz of clock frequency.  
-It can be interpreted as a practical proxy for the achieved **IPC** (instructions per cycle) under the benchmark workload.
-
-The **RV32I** bypassed pipeline achieves **0.82 CycleMark/MHz** (versus **1.24** for the **single-cycle** core and **0.55** for the baseline **pipelined** core).<br>
+The bypassed pipeline improves the **CycleMark/MHz** score compared to the baseline pipelined core by reducing the number of cycles lost to data hazards.<br>
+Although the result remains below the single-cycle core in this configuration, the gap is significantly reduced compared to the classic pipeline without bypassing.
 
 ![cyclemark](./img/cyclemark.png)
 
-With bypassing enabled, stall cycles caused by data hazards are reduced by **~93%**, significantly improving the pipeline’s CPI.  
-The resulting score is now **34%** lower than the **single-cycle** core (compared to a **56%** drop for the classic pipeline without bypassing).
+> 📝 `mhpmcounterx` refers to the standard hardware performance counters defined by the RISC-V specification.<br>
+> In this micro-architecture version, the implemented counters are mapped as follows:
+>
+> | Counter | Meaning |
+> |:--------|:--------|
+> | `mhpmcounter3`  | Data hazard stall cycles |
+> | `mhpmcounter4`  | Taken branches |
+> | `mhpmcounter5`  | Use of the EXE → Decode bypass for `op1` or `op2` |
+> | `mhpmcounter6`  | Use of the EXE → Decode bypass for `op3` |
+> | `mhpmcounter7`  | Use of the MEM → Decode bypass for `op1` or `op2` |
+> | `mhpmcounter8`  | Use of the MEM → Decode bypass for `op3` |
+> | `mhpmcounter9`  | Use of the Writeback → Decode bypass for `op1` or `op2` |
+> | `mhpmcounter10` | Use of the Writeback → Decode bypass for `op3` |
+> | `mhpmcounter11` | Use of the Writeback → EXE bypass for `op1` or `op2` |
+> | `mhpmcounter12` | Use of the Writeback → EXE bypass for `op3` |
+> | `mhpmcounter13` | Use of the Writeback → MEM bypass for `op3` |
 
-Stall cycles could be reduced even further by adding more late-stage forwarding paths, but this would hurt **Fmax** due to longer critical paths.  
-As explained in **Bypass network results**, this microarchitecture implements only the most impactful and frequently-used bypasses, improving CPI while preserving as much frequency as possible.
+With bypassing enabled, many data hazards that previously required pipeline stalls can now be resolved by forwarding values directly from later pipeline stages.<br>
+This improves the effective CPI and brings the pipelined implementation closer to the single-cycle baseline in terms of normalized benchmark efficiency.
 
-Comparison data (CoreMark scores, which CycleMark is derived from) can be found in the [ARM Cortex-M Comparison Table](https://developer.arm.com/-/media/Arm%20Developer%20Community/PDF/Cortex-A%20R%20M%20datasheets/Arm%20Cortex-M%20Comparison%20Table_v3.pdf).
+However, bypassing is not free. Each additional forwarding path increases the amount of comparison, selection, and routing logic around the pipeline stages. This can increase critical-path pressure and reduce the maximum achievable frequency.
 
-> 📝 CycleMark is a derivative benchmark based on CoreMark, using a different timing method (CPU cycle counting). Its score is comparable to CoreMark in relative performance terms but should not be considered an official CoreMark validated score.
+For this reason, this microarchitecture does not attempt to implement every possible bypass path. Instead, it focuses on the most useful and frequent forwarding cases, providing a better balance between **CPI improvement** and **Fmax preservation**.
 
+Comparison data for commercial cores can be found in the [ARM Cortex-M Comparison Table](https://developer.arm.com/-/media/Arm%20Developer%20Community/PDF/Cortex-A%20R%20M%20datasheets/Arm%20Cortex-M%20Comparison%20Table_v3.pdf).
+
+> 📝 CycleMark is a derivative benchmark based on CoreMark, using a different timing method based on CPU cycle counting. Its score can be used for relative performance comparison within this project, but it should not be considered an official CoreMark validated score.
+
+<br>
 <br>
 
 ### Maximum frequency
 
-Ignoring the (limited) area cost, the main downside of bypassing is a reduced maximum operating frequency.<br>
-The bypassed pipeline reaches **167 MHz**, versus **192 MHz** for the baseline pipeline (**-13%**) and **74 MHz** for the **single-cycle** core (**+125%**).
+Compared to the baseline pipeline, the bypassed pipeline generally achieves a slightly lower maximum operating frequency.<br>
+This is expected: the forwarding network adds extra muxing, routing, and fanout on several datapath signals.
 
-The dominant timing bottleneck remains on the back-end datapath, around the **data-memory / Writeback / GPR write** region.  
-However, adding bypassing increases logic depth (muxing), routing pressure, and fanout on several high-activity signals (e.g. `wb_wdata` and bypass candidates), making place-and-route more challenging and ultimately reducing Fmax.
+The dominant timing bottleneck remains in the back-end datapath, around the **data-memory / Writeback / GPR write** region.<br>
+Bypassing increases the complexity of this region by adding more candidate sources, wider selection logic, and additional high-activity paths such as `wb_wdata` and other bypass operands.
 
+As a result, the bypassed pipeline trades part of the baseline pipeline's frequency headroom for a better CPI. Forwarding reduces the number of stall cycles, but the extra datapath logic can make place-and-route more difficult and reduce **Fmax**.
+
+Even with this frequency cost, the bypassed pipeline keeps the main advantage of pipelining compared to the single-cycle design: a significantly shorter critical path and a much higher achievable clock frequency.
+
+<br>
 <br>
 
 ### Parallelism
@@ -1251,15 +1264,12 @@ As shown earlier, the current implementation has an IPC below `1` due to hazard 
 ### Resource utilization and cost insights
 
 From a resource perspective, the core remains close to the baseline **pipeline** version:
-- **RV32I:** 2188 logic elements (659 flip-flops)
-- **RV64I:** 4637 logic elements (1108 flip-flops)
-- A few uSRAM blocks for the GPR file
+- **RV32I:** 3651 logic elements (1653 flip-flops)
+- **RV64I:** 7517 logic elements (3148 flip-flops)
 - No hardware multipliers / DSP blocks
 
-This is expected: the bypass network mostly **reuses existing datapath values** (**Exe**/**Mem** “writeback candidates” and `wb_wdata`).  
+This is expected: the bypass network mostly **reuses existing datapath values** (**Exe**/**Mem** “writeback candidates” and `wb_wdata`).<br>
 Only a small amount of additional logic is required—mainly mux select/control signals and some extra routing—to pick the most recent value when a RAW hazard is detected.
-
-📝 Note: Due to the additional mhpmcounter performance counters, CSR performance-monitoring logic is enabled in simulation only (Verilator). It is not synthesized in the FPGA build.
 
 </details>
 
@@ -1275,23 +1285,45 @@ Only a small amount of additional logic is required—mainly mux select/control 
 
 ## Conclusion
 
-- **Single-cycle:** `74 MHz × 1.24 CycleMark/MHz ≈ 91.8 CycleMark/s`
-- **Baseline pipeline:** `192 MHz × 0.55 CycleMark/MHz ≈ 105.6 CycleMark/s`
-- **Pipeline + selected bypasses (final):** `167 MHz × 0.82 CycleMark/MHz ≈ 137.0 CycleMark/s`
+The **bypassed pipelined** version of the **scholar risc-v** processor focuses on reducing
+the performance loss caused by **RAW data hazards**.
 
-Bypassing comes with a classic trade-off: **lower CPI (fewer data-hazard stalls)** at the cost of **more complex datapaths**, which can reduce **Fmax**.
+This goal is achieved: compared to the baseline **pipelined** version, the bypassed pipeline
+performs more useful work per cycle by forwarding results directly from later pipeline stages
+instead of waiting for them to be written back to the register file.
 
-In practice, the situation is more nuanced than “bypass enabled vs. disabled”.  
-A *fully enabled* bypass network can reduce data-hazard stall cycles by **~97%**, but it also introduces long late-stage combinational paths and routing pressure, which dropped Fmax to **103 MHz** in this design. The resulting throughput was:
-`0.84 CycleMark/MHz × 103 MHz = 86.5 CycleMark/s`.
+From a frequency point of view, the bypassed pipeline is slightly less efficient than the
+baseline pipeline because the forwarding network adds muxing, routing pressure, and fanout on
+critical datapath signals. However, it still keeps the main advantage of pipelining: a much
+higher maximum frequency than the **single-cycle** version.
 
-The key is therefore to **select the right subset of bypasses**: keep the most frequently used paths (best CPI impact) while avoiding the late-stage paths that hurt frequency the most. This “selected bypasses” configuration reaches the best overall throughput in this branch.
+From a normalized efficiency point of view, the bypassed pipeline significantly improves
+**CycleMark/MHz** compared to the baseline pipeline by reducing data-hazard stalls. However,
+it remains slightly less efficient per MHz than the **single-cycle** version, which does not
+suffer from pipeline stalls and flushes in the same way.
 
-Overall, the final bypassed pipeline is a clear success: it improves throughput by **~49%** over the single-cycle core (**137.0 vs 91.8 CycleMark/s**), compared to only **~15%** for the baseline pipeline (**105.6 vs 91.8 CycleMark/s**).  
-This highlights the importance of bypassing—even partially—in a pipelined in-order core.
+The important result appears when both effects are combined. Even though the bypassed pipeline
+does not reach the same Fmax as the baseline pipeline, and does not reach the same
+CycleMark/MHz as the single-cycle core, it provides the best overall throughput among these
+versions. Its frequency remains high enough, and its CPI is improved enough, for the final
+CycleMark/s result to exceed both the baseline pipeline and the single-cycle implementation.
 
-The next iteration of this project will focus on mitigating **control hazards** (e.g., branch prediction), studying the implementation cost, benefits, and trade-offs.  
-As with bypassing, the primary goal will be to reduce branch-related lost cycles, increase **CycleMark/MHz**, and ultimately improve overall **CycleMark/s**.
+Detailed comparison values across **scholar risc-v** microarchitectures are summarized in the
+[main branch README](https://github.com/Kawanami-git/scholar-risc-v/tree/main#project-organization).
+
+This branch also highlights an important microarchitectural trade-off:
+**reducing stall cycles** does not automatically guarantee the best final throughput if the
+added bypass logic hurts **Fmax** too much. The best result comes from balancing both effects.
+
+For this reason, the final implementation does not attempt to enable every possible bypass
+path. Instead, it focuses on the most useful forwarding cases, providing a better balance
+between **CycleMark/MHz** improvement and **frequency preservation**.
+
+The next iteration of this project will focus on mitigating **control hazards**, for example
+through branch prediction, while studying the associated implementation cost, benefits, and
+trade-offs.<br>
+The primary goal will be to reduce the number of flush cycles, increase CycleMark/MHz, and
+therefore improve the overall CycleMark/s of the pipelined core.
 
 <br>
 
