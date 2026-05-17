@@ -1241,6 +1241,9 @@ As a consequence of this **single-cycle** architecture, performance remains limi
 Its limited performance is an expected consequence of the single-cycle architecture. Future versions will progressively improve this baseline, with each enhancement explained in terms of both benefits and trade-offs.<br>
 These evolutions will serve as a foundation to introduce well-known processor optimization techniques such as **pipelining**, **hazard management**, **branch prediction**, and eventually more advanced microarchitectural concepts.
 
+Detailed comparison values across **scholar risc-v** microarchitectures are summarized in the
+[main branch README](https://github.com/Kawanami-git/scholar-risc-v/tree/main#project-organization).
+
 In the next iteration of this project, we will explore how **pipelining** canimprove the maximum clock frequency by splitting the long single-cycle critical path into shorter stages. We will also analyze why this does not automatically translate into a proportional performance gain, due to pipeline hazards, stalls, flushes, and additional control complexity.
 
 <br>

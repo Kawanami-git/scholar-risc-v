@@ -17,10 +17,7 @@
     - Address 0xB00 → lower 32 bits (LSB)
     - Address 0xB80 → upper 32 bits (MSB)
 
-  For simplicity, for the 32-bit architecture,
-  this implementation only provides access
-  to the lower 32 bits (`mcycle[31:0]`), and this value
-  is returned through the `csr_val_o` output regardless of the address used.
+  This implementation only provides access `mcycle`.
 
   The `mcycle` register is read-only: writes to it are ignored,
   and no write-enable logic is implemented.

@@ -4,8 +4,8 @@
 # \file       Makefile
 # \brief      Top-level build & run orchestration for scholar risc-v.
 # \author     Kawanami
-# \version    2.3
-# \date       14/05/2026
+# \version    2.4
+# \date       17/05/2026
 #
 # \details
 #   This Makefile is the main entry point for the scholar risc-v single-cycle
@@ -46,6 +46,7 @@
 # | 2.1     | 23/04/2026 | Kawanami | Add 'mpfs_disco_kit_help' to the 'help' Target.                 |
 # | 2.2     | 30/04/2026 | Kawanami | Delegate shared flows to core harness.   						  |
 # | 2.3     | 14/05/2026 | Kawanami | Update Microchip P&R parameters. 		  						  |
+# | 2.4     | 17/05/2026 | Kawanami | Comment ENABLE_PERF_COUNTERS parameter.						  |
 # ********************************************************************************
 # */
 
@@ -85,7 +86,7 @@ PNR_PASSES 				?= 1
 # GCC-compatible RISC-V ISA string used by firmware and simulation flows.
 ISA 					?= rv32i_zicntr
 
-#
+# Enable optional CSR hardware performance counters (mhpmcounter3+).
 ENABLE_PERF_COUNTERS	?= 1
 
 ####################################                      ####################################
