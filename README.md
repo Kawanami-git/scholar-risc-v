@@ -76,6 +76,8 @@ These **CSRs** are used for CycleMark benchmarking.
 
 This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
 
+However, sub-modules of this repository are distributed under their own licenses.
+
 <br>
 
 ---
@@ -1307,6 +1309,9 @@ does not reach the same Fmax as the baseline pipeline, and does not reach the sa
 CycleMark/MHz as the single-cycle core, it provides the best overall throughput among these
 versions. Its frequency remains high enough, and its CPI is improved enough, for the final
 CycleMark/s result to exceed both the baseline pipeline and the single-cycle implementation.
+
+For the PolarFire MPFS095T implementation, the **RV32I** bypassed pipeline reaches
+approximately **146.0 CycleMark/s** (`0.82 CycleMark/MHz × 178 MHz`).
 
 Detailed comparison values across **scholar risc-v** microarchitectures are summarized in the
 [main branch README](https://github.com/Kawanami-git/scholar-risc-v/tree/main#project-organization).
