@@ -40,7 +40,7 @@
 
 This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
 
-Some files, generated artifacts, or external components used during the build process may come from Xilinx, Digilent, Yocto, or other third-party projects, and therefore remain subject to their respective licenses.
+However, sub-modules of this repository are distributed under their own licenses.
 
 <br>
 <br>
@@ -198,11 +198,11 @@ The repository follows a microarchitecture‑based branching model:
 
 Documentation is split between the **main** branch and the **development** branches:
 
-- The **main** branch describes the project, organization, and environment setup.  
+- The **main** branch describes the project organization.  
 - Each **development** branch documents the specific feature implemented there and also support Doxygen documentation.<br>
 Doxygen documentation can be generated in each branch with:
   ```bash
-  make documentation
+  make riscv_documentation
   ```
   The output is placed in the working directory.
 
@@ -223,35 +223,10 @@ This project is developed on **Ubuntu 24.04 LTS**. Other Ubuntu versions are fin
 
 However, to build a bitstream and run on a supported board, you must use the supported Ubuntu version: **24.04 LTS**.
 
-<br>
-<br>
-
-### Simulation Environment
-
-Install via the main branch makefile:
-```bash
-make install_sim_env
-```
+It also relies on the [**riscv-core-harness**] project to simulate, implement, and validate the different versions of **scholar-riscv-core**.
 
 <br>
 <br>
-
-### PolarFire SoC/FPGA (Microchip)
-
-Install the Microchip environment via the main branch makefile:
-```bash
-make install_microchip_env
-```
-
-<br>
-<br>
-
-### Cora Z7-07S (Digilent)
-
-Install the AMD/Xilinx environment via the main branch makefile:
-```bash
-make install_xilinx_env
-```
 
 <br>
 <br>
@@ -272,7 +247,17 @@ git clone https://github.com/Kawanami-git/scholar-risc-v.git
 cd scholar-risc-v/
 ```
 
-Install the simulation environment:
+Check out the desired branch (example: Single-Cycle):
+```bash
+git checkout Single-Cycle
+```
+
+Fetch the **riscv-core-harness** project:
+```bash
+git submodule update --init --recursive
+```
+
+If not done yet, install the simulation environment:
 ```bash
 make install_sim_env
 ```
@@ -283,10 +268,7 @@ make install_microchip_env
 make install_xilinx_env
 ```
 
-Check out the desired branch (example: Single-Cycle):
-```bash
-git checkout Single-Cycle
-```
+
 
 Now you can run:
 
@@ -311,7 +293,7 @@ make cyclemark
 ```
 > ⚠️ CycleMark simulation can take a long time. Let it finish normally or time out.
 
-For more about the environment and capabilities, see the [simulation docs](./simulation_env/README.md) and the [board support docs](./board_support/).
+For more about the environment and capabilities, see the [**riscv-core-harness README**](https://github.com/Kawanami-git/riscv-core-harness#dependencies).
 
 <br>
 <br>
