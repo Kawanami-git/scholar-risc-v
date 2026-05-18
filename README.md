@@ -223,7 +223,7 @@ This project is developed on **Ubuntu 24.04 LTS**. Other Ubuntu versions are fin
 
 However, to build a bitstream and run on a supported board, you must use the supported Ubuntu version: **24.04 LTS**.
 
-It also relies on the [**riscv-core-harness**] project to simulate, implement, and validate the different versions of **scholar-riscv-core**.
+It also relies on the [**riscv-core-harness**](https://github.com/Kawanami-git/riscv-core-harness#dependencies) project to simulate, implement, and validate the different versions of **scholar-riscv-core**.
 
 <br>
 <br>
