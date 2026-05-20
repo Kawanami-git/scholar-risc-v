@@ -4,8 +4,8 @@
 \file       writeback.sv
 \brief      scholar risc-v core write-back module
 \author     Kawanami
-\date       01/05/2026
-\version    1.5
+\date       20/05/2026
+\version    1.6
 
 \details
  This module implements the write-back  unit
@@ -63,6 +63,7 @@
 | 1.3     | 28/03/2026 | Kawanami   | Improve spike compatibility by detecting whenever a instruction is committed. |
 | 1.4     | 29/03/2026 | Kawanami   | Improve global lisibility by using package instead of parameters. |
 | 1.5     | 01/05/2026 | Kawanami   | Refactor CSR signals name. |
+| 1.6     | 20/05/2026 | Kawanami   | Replace SIM macro with SPIKE.      |
 ********************************************************************************
 */
 module writeback
@@ -106,7 +107,7 @@ module writeback
     /// Core boot/start address
     parameter logic        [Archi - 1 : 0] StartAddress = '0
 ) (
-`ifdef SIM
+`ifdef SPIKE
     /// To verilator (used in simulation_vs_spike)
     output wire                           instr_committed_o,
 `endif
@@ -210,7 +211,7 @@ module writeback
 
   /********************             ********************/
 
-`ifdef SIM
+`ifdef SPIKE
   /// Instruction committed flag
   reg instr_committed_q;
   /// Instruction commit

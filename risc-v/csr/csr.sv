@@ -4,8 +4,8 @@
 \file       csr.sv
 \brief      scholar risc-v core control/status registers file module
 \author     Kawanami
-\date       01/05/2026
-\version    1.5
+\date       20/05/2026
+\version    1.6
 
 \details
   This module implements the scholar risc-v
@@ -35,6 +35,7 @@
 | 1.3     | 28/03/2026 | Kawanami   | Add simulation-driven signals for spike compatibility. |
 | 1.4     | 29/03/2026 | Kawanami   | Improve global lisibility by using package instead of parameters. |
 | 1.5     | 01/05/2026 | Kawanami   | Global refactor of the CSR module. |
+| 1.6     | 20/05/2026 | Kawanami   | Replace SIM macro with SPIKE.      |
 ********************************************************************************
 */
 module csr
@@ -49,7 +50,7 @@ module csr
     parameter bit          EnablePerfCounters = 1'b1
     /* verilator lint_on UNUSEDPARAM */
 ) (
-`ifdef SIM
+`ifdef SPIKE
     /// Simulation CSR overwrite enable
     input  wire                          en_i,
     /// Simulation CSR overwrite data
@@ -136,7 +137,7 @@ module csr
     end
   endgenerate
 
-`ifdef SIM
+`ifdef SPIKE
   /// Output driven by csrs_read
   assign rdata_o = en_i ? data_i : rdata;
 `else

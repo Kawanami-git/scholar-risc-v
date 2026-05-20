@@ -4,8 +4,8 @@
 \file       gpr.sv
 \brief      scholar risc-v core General Purpose Registers file module
 \author     Kawanami
-\date       01/05/2026
-\version    1.3
+\date       20/05/2026
+\version    1.4
 
 \details
   This module implements the scholar risc-v register file.
@@ -27,6 +27,7 @@
 | 1.1     | 22/09/2025 | Kawanami   | Remove packages.sv and provide useful metadata through parameters.<br>Add RV64 support.<br>Update the whole file for coding style compliance.<br>Update the whole file comments for doxygen support. |
 | 1.2     | 28/03/2026 | Kawanami   | Remove simulation-drive signals used to overwrite CSR data written in the GPR (spike compatibility). This is now handled in the CSR module. |
 | 1.3     | 01/05/2026 | Kawanami   | Remove unecessary simulation signal. |
+| 1.4     | 20/05/2026 | Kawanami   | Replace SIM macro with SPIKE.      |
 ********************************************************************************
 */
 module gpr
@@ -40,7 +41,7 @@ module gpr
     /// Core boot/start address
     parameter logic        [Archi - 1 : 0] StartAddress = '0
 ) (
-`ifdef SIM
+`ifdef SPIKE
     /// GPR memory (SIM only)
     output wire [     Archi    - 1 : 0] memory_o  [NB_GPR],
 `endif
@@ -122,7 +123,7 @@ module gpr
   * to Verilator for verification of the core's internal states.
   * This also allows Verilator to modify these internal states during testing.
   */
-`ifdef SIM
+`ifdef SPIKE
   /// Provide access to the GPR internal memory through `memory_o`
   assign memory_o = mem;
 `endif

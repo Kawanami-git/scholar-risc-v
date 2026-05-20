@@ -4,8 +4,8 @@
 \file       scholar_riscv_core.sv
 \brief      scholar risc-v Core Module
 \author     Kawanami
-\date       30/04/2026
-\version    1.6
+\date       20/05/2026
+\version    1.7
 
 \details
   This module is the top-level module of the scholar risc-v core.
@@ -40,6 +40,7 @@
 | 1.4     | 29/03/2026 | Kawanami   | Improve global lisibility by using package instead of parameters. |
 | 1.5     | 15/04/2026 | Kawanami   | Add a reset synchronizer. |
 | 1.6     | 30/04/2026 | Kawanami   | Remove the reset synchronizer, add a riscv-core-harness compatibility signal and refactor some signal names. |
+| 1.7     | 20/05/2026 | Kawanami   | Replace SIM macro with SPIKE.      |
 ********************************************************************************
 */
 module scholar_riscv_core
@@ -119,7 +120,7 @@ module scholar_riscv_core
     /// Enable performance Counters
     parameter bit                          EnablePerfCounters = 1'b1
 ) (
-`ifdef SIM
+`ifdef SPIKE
     /// Simulation CSR overwrite enable
     input  wire                          csr_en_i,
     /// Simulation CSR overwrite data
@@ -245,7 +246,7 @@ module scholar_riscv_core
   /* registers */
   /********************             ********************/
 
-`ifdef SIM
+`ifdef SPIKE
   assign pipeline_flush_o = '0;
 `endif
 
@@ -254,7 +255,7 @@ module scholar_riscv_core
       .Archi       (Archi),
       .StartAddress(StartAddress)
   ) gpr (
-`ifdef SIM
+`ifdef SPIKE
       .memory_o  (gpr_memory_o),
 `endif
       .clk_i     (clk_i),
@@ -274,7 +275,7 @@ module scholar_riscv_core
       .Archi             (Archi),
       .EnablePerfCounters(EnablePerfCounters)
   ) csr (
-`ifdef SIM
+`ifdef SPIKE
       .en_i   (csr_en_i),
       .data_i (csr_data_i),
 `endif
@@ -287,7 +288,7 @@ module scholar_riscv_core
       .rdata_o(csr_rdata)
   );
 
-`ifdef SIM
+`ifdef SPIKE
   assign csr_raddr_o = csr_raddr;
 `endif
 
@@ -346,7 +347,7 @@ module scholar_riscv_core
       .Archi       (Archi),
       .StartAddress(StartAddress)
   ) writeback (
-`ifdef SIM
+`ifdef SPIKE
       .instr_committed_o(instr_committed_o),
 `endif
       .clk_i            (clk_i),
