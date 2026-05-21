@@ -251,7 +251,7 @@ Its main responsibilities are:
 - provide one destination-register write port,
 - keep register `x0` hardwired to zero,
 - store and update the program counter,
-- expose simulation-only register state when `SIM` is enabled.
+- expose register state when `SPIKE` is enabled.
 
 ---
 
@@ -301,9 +301,9 @@ loads and stores.
 
 ---
 
-## Simulation-Only Signals {#simulation_only_signals}
+## SPIKE Signals {#spike_signals}
 
-When `SIM` is defined, the core exposes additional debug and observation signals.
+When `SPIKE` is defined, the core exposes additional debug and observation signals.
 
 These signals are useful for:
 
