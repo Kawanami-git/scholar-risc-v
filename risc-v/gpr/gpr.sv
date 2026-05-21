@@ -4,8 +4,8 @@
 \file       gpr.sv
 \brief      scholar risc-v core General Purpose Registers file module
 \author     Kawanami
-\date       17/05/2026
-\version    1.2
+\date       21/05/2026
+\version    1.3
 
 \details
   This module implements the scholar risc-v register file.
@@ -23,6 +23,7 @@
 | 1.0     | 07/03/2026 | Kawanami   | Initial version of the module.            |
 | 1.1     | 26/03/2026 | Kawanami   | Remove simulation-driven signals.         |
 | 1.2     | 17/05/2026 | Kawanami   | Remove vendor-backed instanciation and use parameter for architecture.       |
+| 1.3     | 21/05/2026 | Kawanami   | Replace SIM macro with SPIKE.             |
 ********************************************************************************
 */
 
@@ -39,8 +40,8 @@ module gpr
     /// Architecture to build (either 32-bit or 64-bit)
     parameter int unsigned Archi = 32
 ) (
-`ifdef SIM
-    /// GPR memory (SIM only)
+`ifdef SPIKE
+    /// GPR memory
     output wire [     Archi    - 1 : 0] memory_o  [NB_GPR],
 `endif
     /// System clock
@@ -101,8 +102,9 @@ module gpr
   /// Register source 2 value according to Register source address
   assign rs2_data_o = mem[rs2_i];
 
-  /// Provide access to the GPR internal memory through `memory_o` (SIM ONLY)
+`ifdef SPIKE
+  /// Provide access to the GPR internal memory through `memory_o`
   assign memory_o   = mem;
-
+`endif
 
 endmodule

@@ -4,7 +4,7 @@
 \file       csr.sv
 \brief      scholar risc-v core control/status registers file module
 \author     Kawanami
-\date       16/05/2026
+\date       21/05/2026
 \version    1.2
 
 \details
@@ -40,6 +40,7 @@
 | 1.0     | 07/03/2026 | Kawanami   | Initial version of the module.            |
 | 1.1     | 26/03/2026 | Kawanami   | Add simulation driven signals to overwrite CSR value (for spike compatibility).            |
 | 1.1     | 16/05/2026 | Kawanami   | Add EnablePerfCounters parameter to enable/disable CSR implementation. |
+| 1.2     | 21/05/2026 | Kawanami   | Replace SIM macro with SPIKE.             |
 ********************************************************************************
 */
 
@@ -57,7 +58,7 @@ module csr
   /// Enable performance Counters
   parameter bit          EnablePerfCounters = 1'b1
 ) (
-`ifdef SIM
+`ifdef SPIKE
     /// Simulation CSR overwrite enable
     input wire                          en_i,
     /// Simulation CSR overwrite data
@@ -272,7 +273,7 @@ module csr
       end
     end
 
-  `ifdef SIM
+  `ifdef SPIKE
         /// Output driven by csrs_read
         assign rdata_o = en_i ? data_i : rdata;
   `else
@@ -357,7 +358,7 @@ module csr
         end
       end
 
-`ifdef SIM
+`ifdef SPIKE
       /// Output driven by csrs_read
       assign rdata_o = en_i ? data_i : rdata;
 `else

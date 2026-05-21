@@ -4,8 +4,8 @@
 \file       writeback.sv
 \brief      scholar risc-v core write-back stage
 \author     Kawanami
-\date       17/05/2026
-\version    1.1
+\date       21/05/2026
+\version    1.2
 
 \details
   This module implements the Writeback (WB) stage of the scholar risc-v core.
@@ -22,6 +22,7 @@
 |:-------:|:----------:|:-----------|:------------------------------------------|
 | 1.0     | 07/03/2026 | Kawanami   | Initial version of the module.            |
 | 1.1     | 17/05/2026 | Kawanami   | Replace packages with interfaces.         |
+| 1.2     | 21/05/2026 | Kawanami   | Replace SIM macro with SPIKE.             |
 ********************************************************************************
 */
 
@@ -45,7 +46,7 @@ module writeback
     /// Architecture to build (either 32-bit or 64-bit)
     parameter int unsigned Archi = 32
 ) (
-`ifdef SIM
+`ifdef SPIKE
     /// To verilator (used in simulation_vs_spike)
     output wire instr_committed_o,
 `endif
@@ -164,7 +165,7 @@ module writeback
   /// GPR write data
   assign gpr_wdata_o         = gpr_wdata;
 
-`ifdef SIM
+`ifdef SPIKE
   /// Instruction committed flag
   reg instr_committed_q;
   /// Instruction commit
