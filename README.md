@@ -18,7 +18,7 @@ The trade-off is that the clock period must be long enough to accommodate the sl
 Despite that limitation, the **single-cycle** design offers an ideal learning platform:<br>
 it is predictable (each instruction takes one cycle), easy to visualize, and straightforward to reason about — making it perfect for understanding the fundamentals of processor microarchitecture before moving toward more complex designs.
 
-![SCHOLAR_RISC-V_architecture](./img/SCHOLAR_RISC-V_architecture.png)
+![SCHOLAR_RISC-V_architecture](./img/SCHOLAR_RISC-V_architecture.svg)
 
 > 📝 
 >
