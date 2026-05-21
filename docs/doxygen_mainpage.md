@@ -483,7 +483,7 @@ Its main responsibilities are:
 - provide source-register read data,
 - receive destination-register writeback data,
 - keep register `x0` hardwired to zero,
-- expose simulation-only register state when `SIM` is enabled.
+- expose simulation-only register state when `SPIKE` is enabled.
 
 Start here when debugging operand values or register writeback behavior.
 
@@ -545,9 +545,9 @@ loads and stores.
 
 ---
 
-## Simulation-Only Signals {#simulation_only_signals}
+## SPIKE Signals {#spike_signals}
 
-When `SIM` is defined, the core exposes additional debug and observation signals.
+When `SPIKE` is defined, the core exposes additional debug and observation signals.
 
 These signals are useful for:
 

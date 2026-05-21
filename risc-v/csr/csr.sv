@@ -4,8 +4,8 @@
 \file       csr.sv
 \brief      scholar risc-v core control/status registers file module
 \author     Kawanami
-\date       16/05/2026
-\version    1.4
+\date       21/05/2026
+\version    1.5
 
 \details
   This module implements the scholar risc-v
@@ -40,6 +40,7 @@
 | 1.2     | 19/04/2026 | Kawanami   | Add simulation-driven signals for spike compatibility and replace architecture definition with a parameter. |
 | 1.3     | 01/05/2026 | Kawanami   | Refactor signals name and add a parameter to enable perf. counters. |
 | 1.4     | 16/05/2026 | Kawanami   | Compute the number of cycles lost due to control hazard instead of capturing control hazard event. |
+| 1.5     | 21/05/2026 | Kawanami   | Replace SIM with SPIKE for more clarity.         |
 ********************************************************************************
 */
 
@@ -57,7 +58,7 @@ module csr
     /// Enable performance Counters
     parameter bit          EnablePerfCounters = 1'b1
 ) (
-`ifdef SIM
+`ifdef SPIKE
     /// Simulation CSR overwrite enable
     input wire                          en_i,
     /// Simulation CSR overwrite data
@@ -182,7 +183,7 @@ module csr
         end
       end
 
-`ifdef SIM
+`ifdef SPIKE
       /// Output driven by csrs_read
       assign rdata_o = en_i ? data_i : rdata;
 `else
@@ -265,7 +266,7 @@ module csr
         end
       end
 
-`ifdef SIM
+`ifdef SPIKE
       /// Output driven by csrs_read
       assign rdata_o = en_i ? data_i : rdata;
 `else

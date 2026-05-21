@@ -4,8 +4,8 @@
 \file       writeback.sv
 \brief      scholar risc-v core write-back stage
 \author     Kawanami
-\date       01/05/2026
-\version    1.4
+\date       21/05/2026
+\version    1.5
 
 \details
   This module implements the Writeback (WB) stage of the scholar risc-v core.
@@ -25,6 +25,7 @@
 | 1.2     | 15/02/2026 | Kawanami   | Replace custom interface with OBI standard. |
 | 1.3     | 21/04/2026 | Kawanami   | Replace architecture definition with a parameter and use interfaces instead of packages. |
 | 1.4     | 01/05/2026 | Kawanami   | Refactor signals name.                    |
+| 1.5     | 21/05/2026 | Kawanami   | Replace SIM with SPIKE for more clarity.         |
 ********************************************************************************
 */
 
@@ -46,7 +47,7 @@ module writeback
     /// Architecture to build (either 32-bit or 64-bit)
     parameter int unsigned Archi = 32
 ) (
-`ifdef SIM
+`ifdef SPIKE
     /// To verilator (used in simulation_vs_spike)
     output wire instr_committed_o,
 `endif
@@ -150,7 +151,7 @@ module writeback
   assign wb2ctrl_o.csr_ctrl  = csr_ctrl_q;
 
 
-`ifdef SIM
+`ifdef SPIKE
   reg instr_committed_q;
   reg mem_valid_q;
   /// Instruction commit

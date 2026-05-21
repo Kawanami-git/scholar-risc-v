@@ -4,8 +4,8 @@
 \file       scholar_riscv_core.sv
 \brief      scholar risc-v core Module
 \author     Kawanami
-\date       01/05/2026
-\version    1.6
+\date       21/05/2026
+\version    1.7
 
 \details
   This module is the top-level module of the scholar risc-v core.
@@ -40,6 +40,7 @@
 | 1.4     | 15/02/2026 | Kawanami   | Replace custom interface with OBI standard. |
 | 1.5     | 26/02/2026 | Kawanami   | Fix data hazard counting. |
 | 1.6     | 01/05/2026 | Kawanami   | Add a riscv-core-harness compatibility signals and refactor some signals name. |
+| 1.7     | 21/05/2026 | Kawanami   | Replace SIM with SPIKE for more clarity.         |
 ********************************************************************************
 */
 
@@ -62,14 +63,14 @@ module scholar_riscv_core
     /// Enable performance Counters
     parameter bit                          EnablePerfCounters = 1'b1
 ) (
-`ifdef SIM
+`ifdef SPIKE
     /// Simulation CSR overwrite enable
     input  wire                          csr_en_i,
     /// Simulation CSR overwrite data
     input  wire [Archi          - 1 : 0] csr_data_i,
     /// Decode to CSR raddr
     output wire [                11 : 0] csr_raddr_o,
-    /// GPR memory (SIM only)
+    /// GPR memory
     output wire [      Archi    - 1 : 0] gpr_memory_o     [NB_GPR],
     /// Pipeline flush flag
     output wire                          pipeline_flush_o,
@@ -200,7 +201,7 @@ module scholar_riscv_core
   gpr #(
       .Archi(Archi)
   ) gpr (
-`ifdef SIM
+`ifdef SPIKE
       .memory_o  (gpr_memory_o),
 `endif
       .clk_i     (clk_i),
@@ -219,7 +220,7 @@ module scholar_riscv_core
       .Archi             (Archi),
       .EnablePerfCounters(EnablePerfCounters)
   ) csr (
-`ifdef SIM
+`ifdef SPIKE
       .en_i      (csr_en_i),
       .data_i    (csr_data_i),
 `endif
@@ -254,7 +255,7 @@ module scholar_riscv_core
       .pc_o          (pc)
   );
 
-`ifdef SIM
+`ifdef SPIKE
   assign csr_raddr_o      = csr_raddr;
   assign pipeline_flush_o = !softresetn || !softresetn_q;
 `endif
@@ -374,7 +375,7 @@ module scholar_riscv_core
   writeback #(
       .Archi(Archi)
   ) writeback (
-`ifdef SIM
+`ifdef SPIKE
       .instr_committed_o(instr_committed_o),
 `endif
       .clk_i            (clk_i),
