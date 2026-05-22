@@ -24,7 +24,7 @@ At this stage, the processor supports the **RV32I** and **RV64I** base instructi
 
 These **CSRs** are used for CycleMark benchmarking.
 
-![SCHOLAR_RISC-V_architecture](./img/SCHOLAR_RISC-V_architecture.png)
+![SCHOLAR_RISC-V_architecture](./img/SCHOLAR_RISC-V_architecture.svg)
 
 > 📝 Note
 >
