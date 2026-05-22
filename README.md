@@ -13,7 +13,7 @@ At this stage, the processor supports the **RV32I** and **RV64I** base instructi
 
 A **pipelined** microarchitecture means that each instruction is completed over multiple clock cycles, while several instructions are overlapped in flight (one per stage).
 
-![SCHOLAR_RISC-V_architecture](./img/SCHOLAR_RISC-V_architecture.png)
+![SCHOLAR_RISC-V_architecture](./img/SCHOLAR_RISC-V_architecture.svg)
 
 > 📝
 >
