@@ -6,7 +6,7 @@ Designed as an educational project, **scholar risc-v** illustrates the internal 
 This document provides an overview of the **bypassing** mechanism, lists the supported instructions, explains how the processor operates at this stage of development, and discusses both its performance and limitations. Finally, it outlines the next planned steps for the project’s evolution.
 
 The **pipelined** **scholar risc-v** with **bypassing** represents the second enhancement of the microarchitecture.<br>
-If you have not read the previous version describing the baseline **pipelined** core, please refer to the [pipeline](https://github.com/Kawanami-git/SCHOLAR_RISC-V/tree/pipeline) branch.
+If you have not read the previous version describing the baseline **pipelined** core, please refer to the [pipeline](https://github.com/Kawanami-git/scholar-risc-v/tree/pipeline) branch.
 
 This version remains **single-issue** (only one instruction is issued per cycle).<br>
 At this stage, the processor supports the **RV32I** and **RV64I** base instruction sets, along with mcycle (Zicntr) and several HPM-like performance counters (mhpmcounter3…mhpmcounter13) for CycleMark profiling: 
@@ -24,7 +24,7 @@ At this stage, the processor supports the **RV32I** and **RV64I** base instructi
 
 These **CSRs** are used for CycleMark benchmarking.
 
-![SCHOLAR_RISC-V_architecture](./img/SCHOLAR_RISC-V_architecture.svg)
+![scholar_riscv_architecture](./img/scholar_riscv_architecture.svg)
 
 > 📝 Note
 >
@@ -393,7 +393,7 @@ Several bypass configurations are explored in this branch. For each, we evaluate
 
 ## Overview
 
-As explained in the [`pipeline` branch](https://github.com/Kawanami-git/SCHOLAR_RISC-V/tree/pipeline), introducing a pipelined microarchitecture also introduces **data hazards**.
+As explained in the [`pipeline` branch](https://github.com/Kawanami-git/scholar-risc-v/tree/pipeline), introducing a pipelined microarchitecture also introduces **data hazards**.
 
 In this in-order **pipeline**, only one class of data hazard can occur: **Read After Write (RAW)**.<br>
 A RAW hazard happens when the result produced by instruction *n* is required as an input by a following instruction *n + x* (with *x ≥ 1*), before the value has been written back to the architectural register file.
@@ -1084,14 +1084,14 @@ Its execution flow can be summarized as follows:
   - Jump to the main function (**jal**) -> control hazard
   - After the execution of main, loop to keep a known step (**j**)
 
-As data-hazard handling was already introduced in the baseline [pipelined](https://github.com/Kawanami-git/SCHOLAR_RISC-V/tree/pipeline) version, this execution-flow example focuses specifically on the bypass (forwarding) system.
+As data-hazard handling was already introduced in the baseline [pipelined](https://github.com/Kawanami-git/scholar-risc-v/tree/pipeline) version, this execution-flow example focuses specifically on the bypass (forwarding) system.
 
 <br>
 <br>
 
 ### RAW ALU -> ALU
 
-![SCHOLAR_RISC-V_bypass](./img/SCHOLAR_RISC-V_bypass.png)
+![scholar_riscv_bypass](./img/scholar_riscv_bypass.png)
 
 <br>
 
@@ -1166,7 +1166,7 @@ This illustrates the general bypass flow used throughout the design: detect the 
 <details>
 <summary></summary>
 
-![SCHOLAR_RISC-V_resources](./img/SCHOLAR_RISC-V_32bit_resources.png)
+![scholar_riscv_resources](./img/scholar_riscv_32bit_resources.png)
 
 As for the **single-cycle** and the **pipelined** versions, the performance of the **scholar risc-v** processor is evaluated using three key indicators:
   - **CycleMark/MHz** — a normalized performance score derived from CoreMark.
@@ -1175,10 +1175,11 @@ As for the **single-cycle** and the **pipelined** versions, the performance of t
 
 <br>
 
-| **Architecture**                  | **CycleMark/MHz** | **FPGA Resources & Performance (PolarFire MPFS095T)**                          |
-|----------------------------------|------------------:|--------------------------------------------------------------------------------|
-| **RV32I + `CSR*` (Zicntr)**      | 0.82              | LEs: 3651 (1653 FFs)<br>Fmax: 178 MHz<br>uSRAM: 6<br>LSRAM: 0<br>Math blocks: 0 |
-| **RV64I + `mcycle` (Zicntr)**    | 0.70              | LEs: 7517 (3148 FFs)<br>Fmax: 142 MHz<br>uSRAM: 12<br>LSRAM: 0<br>Math blocks: 0 |
+| **Branch** | **Features**                                                             | **CycleMark/MHz** | **FPGA Results (PolarFire MPFS095T)**                                                                 |
+| ---------- | ------------------------------------------------------------------------ | ----------------: | ----------------------------------------------------------------------------------------------------- |
+| `RV32I + CSR* (Zicntr)`   | Pipelined single-issue core with forwarding; **RV32I + `CSR*` (Zicntr)** |              0.82 | CycleMark/s: 146.0<br>Fmax: 178 MHz<br>LEs: 3651 (1653 FFs)<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
+| `RV64I + CSR* (Zicntr)`   | Pipelined single-issue core with forwarding; **RV64I + `CSR*` (Zicntr)**               |              0.70 | CycleMark/s: 99.4<br>Fmax: 142 MHz<br>LEs: 7517 (3148 FFs)<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
+
 
 > 📝
 > `CSR*`: only `mcycle` is enabled in the synthesized implementation.
