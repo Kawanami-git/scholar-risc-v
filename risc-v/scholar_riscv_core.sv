@@ -408,13 +408,13 @@ module scholar_riscv_core
   * - Second cycle: decode is flushed (= not ready).
   *
   * As fetch requests a new instruction only if decode is ready,
-  * there is a two cycles penality.
-  * To avoid the second cycle penality, fetch verifies if decode is
+  * there is a two cycles penalty.
+  * To avoid the second cycle penalty, fetch verifies if decode is
   * ready or under reset:
   * - If ready, no issues.
   * - If under reset, it will be ready at the next cycle
   *   when the instruction will be available because `softresetn`
-  *   is a one cyle pulse.
+  *   is a one cycle pulse.
   */
   fetch #(
       .Archi(Archi)
