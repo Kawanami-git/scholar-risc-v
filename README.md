@@ -13,7 +13,7 @@ At this stage, the processor supports the **RV32I** and **RV64I** base instructi
 
 A **pipelined** microarchitecture means that each instruction is completed over multiple clock cycles, while several instructions are overlapped in flight (one per stage).
 
-![SCHOLAR_RISC-V_architecture](./img/SCHOLAR_RISC-V_architecture.svg)
+![scholar_riscv_architecture](./img/scholar_riscv_architecture.svg)
 
 > 📝
 >
@@ -383,7 +383,7 @@ Mitigations will be introduced in later branches to preserve the project’s ped
 
 ## Overview
 
-As explained in the [Single-Cycle](https://github.com/Kawanami-git/SCHOLAR_RISC-V/tree/Single-Cycle) version, modern processors typically split instruction execution into a few main steps:
+As explained in the [Single-Cycle](https://github.com/Kawanami-git/scholar-risc-v/tree/Single-Cycle) version, modern processors typically split instruction execution into a few main steps:
   - **Fetch** – Retrieve the instruction from memory.
   - **Decode** – Decode the instruction and read its operands.
   - **Execute** – Perform the required arithmetic or logical operation.
@@ -1377,7 +1377,7 @@ Its execution flow can be summarized as follows:
 <details>
 <summary></summary>
 
-![SCHOLAR_RISC-V_data_hazard](./img/SCHOLAR_RISC-V_data_hazard.png)
+![scholar_riscv_data_hazard](./img/scholar_riscv_data_hazard.png)
 
 <br>
 
@@ -1467,7 +1467,7 @@ This trace illustrates the core’s interlock strategy: once a destination regis
 <details>
 <summary></summary>
 
-![SCHOLAR_RISC-V_control_hazard](./img/SCHOLAR_RISC-V_control_hazard.png)
+![scholar_riscv_control_hazard](./img/scholar_riscv_control_hazard.png)
 
 <br>
 
@@ -1567,7 +1567,7 @@ In both cases, correctness is preserved at the cost of **lost cycles**: cycles t
 <details>
 <summary></summary>
 
-![SCHOLAR_RISC-V_resources](./img/SCHOLAR_RISC-V_32bit_resources.png)
+![scholar_riscv_resources](./img/scholar_riscv_32bit_resources.png)
 
 As for the **single-cycle** version, the performance of the **scholar risc-v** processor is evaluated using three key indicators:
   - **CycleMark/MHz** — a normalized performance score derived from CoreMark.
@@ -1576,10 +1576,10 @@ As for the **single-cycle** version, the performance of the **scholar risc-v** p
 
 <br>
 
-| **Architecture**                  | **CycleMark/MHz** | **FPGA Resources & Performance (PolarFire MPFS095T)**                          |
-|----------------------------------|------------------:|--------------------------------------------------------------------------------|
-| **RV32I + `CSR*` (Zicntr)**      | 0.55              | LEs: 3239 (1655 FFs)<br>Fmax: 181 MHz<br>uSRAM: 6<br>LSRAM: 0<br>Math blocks: 0 |
-| **RV64I + `CSR*` (Zicntr)**    | 0.45              | LEs: 6685 (3158 FFs)<br>Fmax: 153 MHz<br>uSRAM: 12<br>LSRAM: 0<br>Math blocks: 0 |
+| **Branch** | **Features**                                             | **CycleMark/MHz** | **FPGA Results (PolarFire MPFS095T)**                                                                 |
+| ---------- | -------------------------------------------------------- | ----------------: | ----------------------------------------------------------------------------------------------------- |
+| **RV32I + `CSR*` (Zicntr)** | Pipelined single-issue core; **RV32I + `CSR*` (Zicntr)** |              0.55 | CycleMark/s: 99.6<br>Fmax: 181 MHz<br>LEs: 3239 (1655 FFs)<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0  |
+| **RV64I + `CSR*` (Zicntr)**    | Pipelined single-issue core; **RV64I + `CSR*` (Zicntr)** |              0.45 | CycleMark/s: 68.9<br>Fmax: 153 MHz<br>LEs: 6685 (3158 FFs)<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
 
 > 📝
 > `CSR*`: only `mcycle` is enabled in the synthesized implementation.
