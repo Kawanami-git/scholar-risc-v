@@ -18,7 +18,7 @@ The trade-off is that the clock period must be long enough to accommodate the sl
 Despite that limitation, the **single-cycle** design offers an ideal learning platform:<br>
 it is predictable (each instruction takes one cycle), easy to visualize, and straightforward to reason about — making it perfect for understanding the fundamentals of processor microarchitecture before moving toward more complex designs.
 
-![SCHOLAR_RISC-V_architecture](./img/SCHOLAR_RISC-V_architecture.svg)
+![scholar_riscv_architecture](./img/scholar_riscv_architecture.svg)
 
 > 📝 
 >
@@ -772,7 +772,7 @@ Its execution flow can be summarized as follows:
 
 Instructions between the jump and the loop are not executed. They are only here to demonstrate that the jump correctly skips over them.
 
-![SCHOLAR_RISC-V_execution_flow](./img/SCHOLAR_RISC-V_execution_flow.png)
+![scholar_riscv_execution_flow](./img/scholar_riscv_execution_flow.png)
 
 <br>
 <br>
@@ -1127,17 +1127,18 @@ This detailed exploration also highlights the inherent trade-offs in **single-cy
 <details>
 <summary></summary>
 
-![SCHOLAR_RISC-V_resources](./img/SCHOLAR_RISC-V_32bit_resources.png)
+![scholar_riscv_resources](./img/scholar_riscv_32bit_resources.png)
 
 The performance of the **scholar-risc-v** processor is evaluated using three key indicators:
   - CycleMark/MHz — a normalized performance score derived from CoreMark.
   - Maximum frequency (Fmax) — the highest achievable clock rate on the FPGA.
   - Parallelism — the number of threads that can be executed simultaneously.
 
-| **Architecture**              | **CycleMark/MHz** | **FPGA Resources & Performance (PolarFire MPFS095T)**                          |
-| ----------------------------- | ----------------- | ------------------------------------------------------------------------------ |
-| **RV32I + `mcycle` (Zicntr)** | 1.24              | LEs: 3143 (1093 FFs)<br>Fmax: 77 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
-| **RV64I + `mcycle` (Zicntr)** | 1.05              | LEs: 6542 (2118 FFs)<br>Fmax: 67 MHz<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
+| **Branch**     | **Features**                                                   | **CycleMark/MHz** | **FPGA Results (PolarFire MPFS095T)**                                                               |
+| -------------- | -------------------------------------------------------------- | ----------------: | --------------------------------------------------------------------------------------------------- |
+| **RV32I + `mcycle` (Zicntr)** | Single-cycle, single-issue core; **RV32I + `mcycle` (Zicntr)** |              1.24 | CycleMark/s: 95.5<br>Fmax: 77 MHz<br>LEs: 3143 (1093 FFs)<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
+| **RV64I + `mcycle` (Zicntr)** | Single-cycle, single-issue core; **RV64I + `mcycle` (Zicntr)** |              1.05 | CycleMark/s: 70.4<br>Fmax: 67 MHz<br>LEs: 6542 (2118 FFs)<br>uSRAM: 0<br>LSRAM: 0<br>Math blocks: 0 |
+
 
 > 📝
 > Except for the **CycleMark/MHz**, these results are implementation-dependent.
